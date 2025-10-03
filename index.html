@@ -253,6 +253,16 @@
         transform: translateY(-2px);
       }
 
+      .btn-info {
+        background: #17a2b8;
+        color: white;
+      }
+
+      .btn-info:hover {
+        background: #138496;
+        transform: translateY(-2px);
+      }
+
       .life-preview {
         width: 200px;
         height: 200px;
@@ -413,6 +423,47 @@
         height: 100%;
       }
 
+      .structure {
+        position: absolute;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .structure.house {
+        background: rgba(139, 69, 19, 0.7);
+        border-radius: 10px;
+      }
+
+      .structure.rock {
+        background: rgba(128, 128, 128, 0.7);
+        border-radius: 50%;
+      }
+
+      .structure.tree {
+        background: rgba(34, 139, 34, 0.7);
+        border-radius: 50% 50% 0 0;
+      }
+
+      .structure.water {
+        background: rgba(0, 105, 148, 0.5);
+        border-radius: 10px;
+      }
+
+      .structure.crystal {
+        background: rgba(157, 78, 221, 0.6);
+        border-radius: 10px;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 5px #9d4edd;
+        }
+        to {
+          box-shadow: 0 0 15px #9d4edd;
+        }
+      }
+
       .age-indicator {
         position: absolute;
         top: -15px;
@@ -508,6 +559,10 @@
         background: #9d4edd;
       }
 
+      .notification.structure {
+        background: #17a2b8;
+      }
+
       .notification.show {
         transform: translateY(0);
         opacity: 1;
@@ -545,6 +600,18 @@
         color: var(--success);
       }
 
+      .log-entry.structure {
+        color: #17a2b8;
+      }
+
+      .structure-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
       @media (max-width: 768px) {
         .main-content {
           flex-direction: column;
@@ -558,7 +625,8 @@
           height: 300px;
         }
 
-        .simulation-controls {
+        .simulation-controls,
+        .structure-controls {
           flex-direction: column;
           align-items: center;
         }
@@ -710,7 +778,7 @@
           <h3>Ecosystem Simulation</h3>
           <p>
             Watch your created life forms interact, age, reproduce, and evolve
-            in a simulated environment.
+            in a simulated environment with structures.
           </p>
         </div>
 
@@ -728,8 +796,16 @@
           </button>
         </div>
 
+        <div class="structure-controls">
+          <button class="btn btn-info" id="addHouse">Add House</button>
+          <button class="btn btn-info" id="addRock">Add Rock</button>
+          <button class="btn btn-info" id="addTree">Add Tree</button>
+          <button class="btn btn-info" id="addWater">Add Water</button>
+          <button class="btn btn-info" id="addCrystal">Add Crystal</button>
+        </div>
+
         <div class="ecosystem" id="ecosystem">
-          <!-- Simulated life forms and food will appear here -->
+          <!-- Simulated life forms, food, and structures will appear here -->
         </div>
 
         <div class="stats">
@@ -740,6 +816,10 @@
           <div class="stat">
             <div class="stat-value" id="foodCount">0</div>
             <div>Food Items</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="structureCount">0</div>
+            <div>Structures</div>
           </div>
           <div class="stat">
             <div class="stat-value" id="generationCount">1</div>
@@ -802,10 +882,18 @@
         const clearSimulationBtn = document.getElementById("clearSimulation");
         const lifeCountEl = document.getElementById("lifeCount");
         const foodCountEl = document.getElementById("foodCount");
+        const structureCountEl = document.getElementById("structureCount");
         const generationCountEl = document.getElementById("generationCount");
         const timeElapsedEl = document.getElementById("timeElapsed");
         const evolutionCountEl = document.getElementById("evolutionCount");
         const logEntriesEl = document.getElementById("logEntries");
+
+        // Structure buttons
+        const addHouseBtn = document.getElementById("addHouse");
+        const addRockBtn = document.getElementById("addRock");
+        const addTreeBtn = document.getElementById("addTree");
+        const addWaterBtn = document.getElementById("addWater");
+        const addCrystalBtn = document.getElementById("addCrystal");
 
         // Tab functionality
         const tabs = document.querySelectorAll(".tab");
@@ -837,6 +925,7 @@
         let createdLifeForms = [];
         let simulatedLifeForms = [];
         let foodItems = [];
+        let structures = [];
         let simulationInterval = null;
         let simulationTime = 0;
         let selectedLifeFormId = null;
@@ -901,6 +990,13 @@
         addFoodBtn.addEventListener("click", addFood);
         speedUpBtn.addEventListener("click", speedUpSimulation);
         clearSimulationBtn.addEventListener("click", clearSimulation);
+
+        // Structure controls
+        addHouseBtn.addEventListener("click", () => addStructure("house"));
+        addRockBtn.addEventListener("click", () => addStructure("rock"));
+        addTreeBtn.addEventListener("click", () => addStructure("tree"));
+        addWaterBtn.addEventListener("click", () => addStructure("water"));
+        addCrystalBtn.addEventListener("click", () => addStructure("crystal"));
 
         // Update preview function
         function updatePreview() {
@@ -1069,6 +1165,7 @@
             maxAge: 100 + Math.floor(Math.random() * 100),
             reproductionCooldown: 0,
             generation: lifeForm.generation || 1,
+            inShelter: false,
           };
 
           simulatedLifeForms.push(simulatedLife);
@@ -1086,6 +1183,37 @@
           };
 
           foodItems.push(food);
+          updateStats();
+          renderSimulation();
+        }
+
+        // Add structure to simulation
+        function addStructure(type) {
+          const size =
+            type === "house"
+              ? 80
+              : type === "rock"
+              ? 40
+              : type === "tree"
+              ? 60
+              : type === "water"
+              ? 100
+              : type === "crystal"
+              ? 50
+              : 60;
+
+          const structure = {
+            id: Date.now(),
+            type: type,
+            x: Math.random() * (ecosystem.offsetWidth - size),
+            y: Math.random() * (ecosystem.offsetHeight - size),
+            width: size,
+            height: size,
+          };
+
+          structures.push(structure);
+          addLogEntry(`A ${type} was added to the ecosystem`, "structure");
+          showNotification(`Added a ${type} to the ecosystem`, "structure");
           updateStats();
           renderSimulation();
         }
@@ -1146,6 +1274,68 @@
                   life.direction = -life.direction;
                 }
 
+                // Interact with structures
+                let nearStructure = false;
+                structures.forEach((structure) => {
+                  const dx = life.x - (structure.x + structure.width / 2);
+                  const dy = life.y - (structure.y + structure.height / 2);
+                  const distance = Math.sqrt(dx * dx + dy * dy);
+
+                  if (
+                    distance <
+                    life.size / 2 +
+                      Math.max(structure.width, structure.height) / 2
+                  ) {
+                    nearStructure = true;
+
+                    // Structure-specific interactions
+                    switch (structure.type) {
+                      case "house":
+                        // Shelter provides energy regeneration
+                        if (!life.inShelter) {
+                          life.energy = Math.min(100, life.energy + 0.5);
+                          life.inShelter = true;
+                        }
+                        break;
+                      case "water":
+                        // Water provides hydration
+                        life.energy = Math.min(100, life.energy + 0.2);
+                        break;
+                      case "crystal":
+                        // Crystals can cause mutations
+                        if (Math.random() < 0.001) {
+                          life.energy = Math.min(100, life.energy + 10);
+                          addLogEntry(
+                            `${life.template.name} was energized by a crystal!`,
+                            "evolution"
+                          );
+                        }
+                        break;
+                      case "rock":
+                        // Rocks are obstacles
+                        life.direction = Math.random() * Math.PI * 2;
+                        break;
+                      case "tree":
+                        // Trees provide occasional food
+                        if (Math.random() < 0.005) {
+                          addFood();
+                          addLogEntry(
+                            `${life.template.name} found fruit from a tree!`,
+                            "birth"
+                          );
+                        }
+                        break;
+                    }
+
+                    // Bounce off structures
+                    life.direction = Math.atan2(dy, dx) + Math.PI;
+                  }
+                });
+
+                if (!nearStructure) {
+                  life.inShelter = false;
+                }
+
                 // Occasionally change direction
                 if (Math.random() < 0.02) {
                   life.direction = Math.random() * Math.PI * 2;
@@ -1165,8 +1355,8 @@
                   }
                 });
 
-                // Lose energy
-                life.energy -= 0.1;
+                // Lose energy (less if in shelter)
+                life.energy -= life.inShelter ? 0.05 : 0.1;
 
                 // Die if no energy
                 if (life.energy <= 0) {
@@ -1303,6 +1493,7 @@
             maxAge: parent.maxAge * (0.9 + Math.random() * 0.2),
             reproductionCooldown: 100,
             generation: childTemplate.generation,
+            inShelter: false,
           };
 
           simulatedLifeForms.push(child);
@@ -1328,6 +1519,7 @@
           stopSimulation();
           simulatedLifeForms = [];
           foodItems = [];
+          structures = [];
           simulationTime = 0;
           generation = 1;
           evolutionCount = 0;
@@ -1341,6 +1533,7 @@
         function updateStats() {
           lifeCountEl.textContent = simulatedLifeForms.length;
           foodCountEl.textContent = foodItems.length;
+          structureCountEl.textContent = structures.length;
           generationCountEl.textContent = generation;
           evolutionCountEl.textContent = evolutionCount;
         }
@@ -1348,6 +1541,17 @@
         // Render simulation
         function renderSimulation() {
           ecosystem.innerHTML = "";
+
+          // Render structures
+          structures.forEach((structure) => {
+            const structureEl = document.createElement("div");
+            structureEl.className = `structure ${structure.type}`;
+            structureEl.style.left = `${structure.x}px`;
+            structureEl.style.top = `${structure.y}px`;
+            structureEl.style.width = `${structure.width}px`;
+            structureEl.style.height = `${structure.height}px`;
+            ecosystem.appendChild(structureEl);
+          });
 
           // Render food
           foodItems.forEach((food) => {
@@ -1463,6 +1667,8 @@
             notification.classList.add("evolution");
           } else if (type === "birth") {
             notification.classList.add("warning");
+          } else if (type === "structure") {
+            notification.classList.add("structure");
           }
           notification.classList.add("show");
           setTimeout(() => {
