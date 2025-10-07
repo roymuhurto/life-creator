@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Life Creator - Design and Simulate</title>
+    <title>Life Creator - Design, Simulate, Battle, and Rebel</title>
     <style>
       :root {
         --primary: #4a6fa5;
@@ -14,6 +14,11 @@
         --success: #51cf66;
         --warning: #f9c74f;
         --ecosystem-bg: #1a3c27;
+        --tool-color: #6c757d;
+        --weapon-color: #dc3545;
+        --magic-color: #6f42c1;
+        --war-color: #8b0000;
+        --rebellion-color: #e83e8c;
       }
 
       * {
@@ -57,6 +62,7 @@
         justify-content: center;
         margin-bottom: 20px;
         gap: 10px;
+        flex-wrap: wrap;
       }
 
       .tab {
@@ -263,6 +269,66 @@
         transform: translateY(-2px);
       }
 
+      .btn-craft {
+        background: #9d4edd;
+        color: white;
+      }
+
+      .btn-craft:hover {
+        background: #8a3ec9;
+        transform: translateY(-2px);
+      }
+
+      .btn-tool {
+        background: var(--tool-color);
+        color: white;
+      }
+
+      .btn-tool:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+      }
+
+      .btn-weapon {
+        background: var(--weapon-color);
+        color: white;
+      }
+
+      .btn-weapon:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+      }
+
+      .btn-magic {
+        background: var(--magic-color);
+        color: white;
+      }
+
+      .btn-magic:hover {
+        background: #5a32a3;
+        transform: translateY(-2px);
+      }
+
+      .btn-war {
+        background: var(--war-color);
+        color: white;
+      }
+
+      .btn-war:hover {
+        background: #a00;
+        transform: translateY(-2px);
+      }
+
+      .btn-rebellion {
+        background: var(--rebellion-color);
+        color: white;
+      }
+
+      .btn-rebellion:hover {
+        background: #d91a72;
+        transform: translateY(-2px);
+      }
+
       .life-preview {
         width: 200px;
         height: 200px;
@@ -455,12 +521,79 @@
         animation: glow 2s ease-in-out infinite alternate;
       }
 
+      .structure.tool {
+        background: rgba(192, 192, 192, 0.8);
+        border-radius: 5px;
+        width: 20px !important;
+        height: 20px !important;
+      }
+
+      .structure.farm {
+        background: rgba(107, 142, 35, 0.7);
+        border-radius: 5px;
+        border: 1px dashed rgba(255, 255, 255, 0.5);
+      }
+
+      .structure.weapon {
+        background: rgba(220, 53, 69, 0.7);
+        border-radius: 5px;
+        width: 25px !important;
+        height: 5px !important;
+      }
+
+      .structure.magic {
+        background: rgba(111, 66, 193, 0.7);
+        border-radius: 50%;
+        width: 15px !important;
+        height: 15px !important;
+        animation: magic-glow 1.5s ease-in-out infinite alternate;
+      }
+
+      .structure.fort {
+        background: rgba(139, 0, 0, 0.7);
+        border-radius: 10px;
+        border: 3px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .structure.tower {
+        background: rgba(165, 42, 42, 0.7);
+        border-radius: 50% 50% 0 0;
+        width: 30px !important;
+        height: 50px !important;
+      }
+
+      .structure.hideout {
+        background: rgba(232, 62, 140, 0.7);
+        border-radius: 10px;
+        border: 2px dashed rgba(255, 255, 255, 0.5);
+        animation: rebellion-pulse 2s ease-in-out infinite;
+      }
+
       @keyframes glow {
         from {
           box-shadow: 0 0 5px #9d4edd;
         }
         to {
           box-shadow: 0 0 15px #9d4edd;
+        }
+      }
+
+      @keyframes magic-glow {
+        from {
+          box-shadow: 0 0 5px #6f42c1;
+        }
+        to {
+          box-shadow: 0 0 15px #6f42c1, 0 0 25px #6f42c1;
+        }
+      }
+
+      @keyframes rebellion-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 5px #e83e8c;
+        }
+        50% {
+          box-shadow: 0 0 15px #e83e8c, 0 0 25px #e83e8c;
         }
       }
 
@@ -477,12 +610,121 @@
         white-space: nowrap;
       }
 
+      .health-indicator {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 5px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .health-bar {
+        height: 100%;
+        background: var(--success);
+        transition: width 0.3s;
+      }
+
+      .loyalty-indicator {
+        position: absolute;
+        top: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 5px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .loyalty-bar {
+        height: 100%;
+        background: var(--rebellion-color);
+        transition: width 0.3s;
+      }
+
+      .inventory-indicator {
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 10px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 2px 5px;
+        border-radius: 10px;
+        white-space: nowrap;
+      }
+
+      .faction-indicator {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid white;
+      }
+
+      .rebel-indicator {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--rebellion-color);
+        animation: rebel-pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes rebel-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 0.7;
+        }
+      }
+
       .food {
         position: absolute;
         width: 10px;
         height: 10px;
         background: #f9c74f;
         border-radius: 50%;
+      }
+
+      .resource {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      .resource.wood {
+        background: #8b4513;
+      }
+
+      .resource.stone {
+        background: #696969;
+      }
+
+      .resource.crystal {
+        background: #9d4edd;
+      }
+
+      .resource.metal {
+        background: #a9a9a9;
+      }
+
+      .resource.magic {
+        background: #6f42c1;
       }
 
       .evolution-particle {
@@ -494,6 +736,42 @@
         animation: float 2s ease-in-out infinite;
       }
 
+      .crafting-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #f9c74f;
+        border-radius: 50%;
+        animation: craft-float 1s ease-in-out infinite;
+      }
+
+      .magic-particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #6f42c1;
+        border-radius: 50%;
+        animation: magic-float 1.5s ease-in-out infinite;
+      }
+
+      .combat-particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #ff6b6b;
+        border-radius: 50%;
+        animation: combat-float 0.5s ease-out;
+      }
+
+      .rebellion-particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #e83e8c;
+        border-radius: 50%;
+        animation: rebellion-float 1s ease-in-out infinite;
+      }
+
       @keyframes float {
         0%,
         100% {
@@ -501,6 +779,47 @@
         }
         50% {
           transform: translateY(-10px);
+        }
+      }
+
+      @keyframes craft-float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-8px) rotate(180deg);
+        }
+      }
+
+      @keyframes magic-float {
+        0%,
+        100% {
+          transform: translateY(0px) scale(1);
+        }
+        50% {
+          transform: translateY(-12px) scale(1.5);
+        }
+      }
+
+      @keyframes combat-float {
+        0% {
+          transform: translateY(0px) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-20px) scale(0.5);
+          opacity: 0;
+        }
+      }
+
+      @keyframes rebellion-float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(180deg);
         }
       }
 
@@ -563,6 +882,36 @@
         background: #17a2b8;
       }
 
+      .notification.crafting {
+        background: #f9c74f;
+        color: black;
+      }
+
+      .notification.tool {
+        background: var(--tool-color);
+      }
+
+      .notification.weapon {
+        background: var(--weapon-color);
+      }
+
+      .notification.magic {
+        background: var(--magic-color);
+      }
+
+      .notification.war {
+        background: var(--war-color);
+      }
+
+      .notification.rebellion {
+        background: var(--rebellion-color);
+      }
+
+      .notification.leader {
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #333;
+      }
+
       .notification.show {
         transform: translateY(0);
         opacity: 1;
@@ -604,12 +953,368 @@
         color: #17a2b8;
       }
 
+      .log-entry.crafting {
+        color: #f9c74f;
+      }
+
+      .log-entry.tool {
+        color: var(--tool-color);
+      }
+
+      .log-entry.weapon {
+        color: var(--weapon-color);
+      }
+
+      .log-entry.magic {
+        color: var(--magic-color);
+      }
+
+      .log-entry.war {
+        color: var(--war-color);
+      }
+
+      .log-entry.rebellion {
+        color: var(--rebellion-color);
+      }
+
+      .log-entry.leader {
+        color: #ffd700;
+      }
+
       .structure-controls {
         display: flex;
         gap: 10px;
         justify-content: center;
         margin-bottom: 15px;
         flex-wrap: wrap;
+      }
+
+      .crafting-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .tool-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .war-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .rebellion-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .crafting-recipes {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+      }
+
+      .recipe {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+      }
+
+      .recipe h5 {
+        margin-bottom: 5px;
+        color: var(--warning);
+      }
+
+      .recipe-cost {
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .tools-panel {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 20px;
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .tool-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .tool-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-3px);
+      }
+
+      .tool-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .war-panel {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 20px;
+      }
+
+      .factions {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .faction {
+        flex: 1;
+        min-width: 200px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+      }
+
+      .faction-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .faction-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .faction-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .faction-stat {
+        text-align: center;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+      }
+
+      .war-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .rebellion-panel {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 20px;
+      }
+
+      .rebellion-status {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .rebellion-faction {
+        flex: 1;
+        min-width: 200px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+      }
+
+      .rebellion-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .rebellion-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background: var(--rebellion-color);
+      }
+
+      .rebellion-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .rebellion-stat {
+        text-align: center;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+      }
+
+      .rebellion-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* New styles for leaders */
+      .leader-indicator {
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: gold;
+        border-radius: 50%;
+        border: 2px solid white;
+        animation: leader-pulse 2s infinite;
+        z-index: 10;
+      }
+
+      @keyframes leader-pulse {
+        0%,
+        100% {
+          transform: translateX(-50%) scale(1);
+          box-shadow: 0 0 5px gold;
+        }
+        50% {
+          transform: translateX(-50%) scale(1.2);
+          box-shadow: 0 0 15px gold, 0 0 25px gold;
+        }
+      }
+
+      .leader-crown {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.5rem;
+        z-index: 10;
+      }
+
+      .leader-panel {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 20px;
+      }
+
+      .leader-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .leaders-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .leader-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        border: 2px solid rgba(255, 215, 0, 0.3);
+      }
+
+      .leader-card h4 {
+        color: gold;
+        margin-bottom: 10px;
+      }
+
+      .leader-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        margin-top: 10px;
+      }
+
+      .leader-stat {
+        text-align: center;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        font-size: 0.8rem;
+      }
+
+      .leader-abilities {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .ability {
+        display: inline-block;
+        margin: 2px;
+        padding: 3px 6px;
+        background: rgba(255, 215, 0, 0.2);
+        border-radius: 10px;
+        font-size: 0.7rem;
       }
 
       @media (max-width: 768px) {
@@ -626,7 +1331,11 @@
         }
 
         .simulation-controls,
-        .structure-controls {
+        .structure-controls,
+        .crafting-controls,
+        .tool-controls,
+        .war-controls,
+        .rebellion-controls {
           flex-direction: column;
           align-items: center;
         }
@@ -634,6 +1343,11 @@
         .stats {
           flex-direction: column;
           gap: 10px;
+        }
+
+        .factions,
+        .rebellion-status {
+          flex-direction: column;
         }
       }
     </style>
@@ -643,13 +1357,18 @@
       <header>
         <h1>Life Creator</h1>
         <p class="subtitle">
-          Design unique life forms and simulate their evolution
+          Design unique life forms and simulate their evolution, crafting,
+          warfare, and rebellion
         </p>
       </header>
 
       <div class="tabs">
         <button class="tab active" data-tab="creation">Creation</button>
         <button class="tab" data-tab="simulation">Simulation</button>
+        <button class="tab" data-tab="tools">Tools</button>
+        <button class="tab" data-tab="war">War & Factions</button>
+        <button class="tab" data-tab="rebellion">Rebellion</button>
+        <button class="tab" data-tab="leaders">Leaders</button>
       </div>
 
       <div class="tab-content active" id="creation-tab">
@@ -674,6 +1393,20 @@
                 <option value="energy">Energy Being</option>
                 <option value="hybrid">Hybrid</option>
                 <option value="crystal">Crystal Entity</option>
+                <option value="magical">Magical</option>
+                <option value="warrior">Warrior</option>
+                <option value="rebel">Rebel</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="faction">Faction</label>
+              <select id="faction">
+                <option value="neutral">Neutral</option>
+                <option value="red">Red Faction</option>
+                <option value="blue">Blue Faction</option>
+                <option value="green">Green Faction</option>
+                <option value="yellow">Yellow Faction</option>
               </select>
             </div>
 
@@ -705,6 +1438,16 @@
                   style="background-color: #9d4edd"
                   data-color="#9d4edd"
                 ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #6f42c1"
+                  data-color="#6f42c1"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background-color: #e83e8c"
+                  data-color="#e83e8c"
+                ></div>
               </div>
             </div>
 
@@ -721,6 +1464,16 @@
               <div>
                 <input type="checkbox" id="hasLimbs" />
                 <label for="hasLimbs" style="display: inline">Limbs</label>
+              </div>
+              <div>
+                <input type="checkbox" id="hasWings" />
+                <label for="hasWings" style="display: inline">Wings</label>
+              </div>
+              <div>
+                <input type="checkbox" id="hasAntennae" />
+                <label for="hasAntennae" style="display: inline"
+                  >Antennae</label
+                >
               </div>
             </div>
 
@@ -777,8 +1530,8 @@
         <div class="simulation-info">
           <h3>Ecosystem Simulation</h3>
           <p>
-            Watch your created life forms interact, age, reproduce, and evolve
-            in a simulated environment with structures.
+            Watch your created life forms interact, age, reproduce, evolve,
+            craft, battle, and rebel.
           </p>
         </div>
 
@@ -804,8 +1557,39 @@
           <button class="btn btn-info" id="addCrystal">Add Crystal</button>
         </div>
 
+        <div class="crafting-controls">
+          <button class="btn btn-craft" id="addResources">Add Resources</button>
+          <button class="btn btn-craft" id="enableCrafting">
+            Enable Crafting
+          </button>
+        </div>
+
+        <div class="tool-controls">
+          <button class="btn btn-tool" id="addTools">Add Tools</button>
+          <button class="btn btn-weapon" id="addWeapons">Add Weapons</button>
+          <button class="btn btn-magic" id="addMagic">Add Magic</button>
+        </div>
+
+        <div class="war-controls">
+          <button class="btn btn-war" id="addForts">Add Forts</button>
+          <button class="btn btn-war" id="enableWarfare">Enable Warfare</button>
+          <button class="btn btn-war" id="addTowers">Add Watchtowers</button>
+        </div>
+
+        <div class="rebellion-controls">
+          <button class="btn btn-rebellion" id="addHideouts">
+            Add Hideouts
+          </button>
+          <button class="btn btn-rebellion" id="enableRebellion">
+            Enable Rebellion
+          </button>
+          <button class="btn btn-rebellion" id="spreadPropaganda">
+            Spread Propaganda
+          </button>
+        </div>
+
         <div class="ecosystem" id="ecosystem">
-          <!-- Simulated life forms, food, and structures will appear here -->
+          <!-- Simulated life forms, food, resources, and structures will appear here -->
         </div>
 
         <div class="stats">
@@ -816,6 +1600,10 @@
           <div class="stat">
             <div class="stat-value" id="foodCount">0</div>
             <div>Food Items</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="resourceCount">0</div>
+            <div>Resources</div>
           </div>
           <div class="stat">
             <div class="stat-value" id="structureCount">0</div>
@@ -833,6 +1621,82 @@
             <div class="stat-value" id="evolutionCount">0</div>
             <div>Evolutions</div>
           </div>
+          <div class="stat">
+            <div class="stat-value" id="toolCount">0</div>
+            <div>Tools</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="battleCount">0</div>
+            <div>Battles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="rebellionCount">0</div>
+            <div>Rebels</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="leaderCount">0</div>
+            <div>Leaders</div>
+          </div>
+        </div>
+
+        <div class="crafting-recipes">
+          <h4>Crafting Recipes</h4>
+          <div class="recipe">
+            <h5>House</h5>
+            <div class="recipe-cost">Cost: 5 Wood + 3 Stone</div>
+            <div class="recipe-cost">
+              Effect: Provides shelter, reduces energy loss
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Tool</h5>
+            <div class="recipe-cost">Cost: 2 Wood + 1 Stone</div>
+            <div class="recipe-cost">
+              Effect: Increases resource collection speed
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Farm</h5>
+            <div class="recipe-cost">Cost: 3 Wood + 2 Stone</div>
+            <div class="recipe-cost">
+              Effect: Automatically generates food over time
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Weapon</h5>
+            <div class="recipe-cost">Cost: 1 Wood + 2 Metal</div>
+            <div class="recipe-cost">
+              Effect: Increases combat ability and defense
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Magic Staff</h5>
+            <div class="recipe-cost">Cost: 2 Wood + 3 Magic Crystals</div>
+            <div class="recipe-cost">
+              Effect: Enables magical abilities and faster evolution
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Fort</h5>
+            <div class="recipe-cost">Cost: 10 Wood + 8 Stone + 5 Metal</div>
+            <div class="recipe-cost">
+              Effect: Provides defense and healing to faction members
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Watchtower</h5>
+            <div class="recipe-cost">Cost: 5 Wood + 8 Stone</div>
+            <div class="recipe-cost">
+              Effect: Increases vision range and detects enemies
+            </div>
+          </div>
+          <div class="recipe">
+            <h5>Rebel Hideout</h5>
+            <div class="recipe-cost">Cost: 8 Wood + 5 Stone + 3 Metal</div>
+            <div class="recipe-cost">
+              Effect: Hides rebels and increases recruitment speed
+            </div>
+          </div>
         </div>
 
         <div class="evolution-log">
@@ -848,6 +1712,413 @@
         </div>
       </div>
 
+      <div class="tab-content" id="tools-tab">
+        <div class="tools-panel">
+          <h2 class="panel-title">Tools & Equipment</h2>
+          <p>Equip your life forms with tools to enhance their abilities.</p>
+
+          <div class="tools-grid">
+            <div class="tool-item" data-tool="axe">
+              <div class="tool-icon">🪓</div>
+              <h4>Axe</h4>
+              <p>Increases wood collection efficiency</p>
+            </div>
+            <div class="tool-item" data-tool="pickaxe">
+              <div class="tool-icon">⛏️</div>
+              <h4>Pickaxe</h4>
+              <p>Increases stone and metal collection</p>
+            </div>
+            <div class="tool-item" data-tool="hammer">
+              <div class="tool-icon">🔨</div>
+              <h4>Hammer</h4>
+              <p>Speeds up building structures</p>
+            </div>
+            <div class="tool-item" data-tool="fishing-rod">
+              <div class="tool-icon">🎣</div>
+              <h4>Fishing Rod</h4>
+              <p>Allows fishing from water sources</p>
+            </div>
+            <div class="tool-item" data-tool="sword">
+              <div class="tool-icon">⚔️</div>
+              <h4>Sword</h4>
+              <p>Increases combat ability</p>
+            </div>
+            <div class="tool-item" data-tool="shield">
+              <div class="tool-icon">🛡️</div>
+              <h4>Shield</h4>
+              <p>Provides defense against attacks</p>
+            </div>
+            <div class="tool-item" data-tool="staff">
+              <div class="tool-icon">🔮</div>
+              <h4>Magic Staff</h4>
+              <p>Enables magical abilities</p>
+            </div>
+            <div class="tool-item" data-tool="potion">
+              <div class="tool-icon">🧪</div>
+              <h4>Healing Potion</h4>
+              <p>Restores health and energy</p>
+            </div>
+            <div class="tool-item" data-tool="compass">
+              <div class="tool-icon">🧭</div>
+              <h4>Compass</h4>
+              <p>Improves navigation and movement</p>
+            </div>
+            <div class="tool-item" data-tool="backpack">
+              <div class="tool-icon">🎒</div>
+              <h4>Backpack</h4>
+              <p>Increases inventory capacity</p>
+            </div>
+            <div class="tool-item" data-tool="lantern">
+              <div class="tool-icon">🏮</div>
+              <h4>Lantern</h4>
+              <p>Provides light in dark areas</p>
+            </div>
+            <div class="tool-item" data-tool="spyglass">
+              <div class="tool-icon">🔭</div>
+              <h4>Spyglass</h4>
+              <p>Extends vision range</p>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 20px">
+            <label for="selectedLifeForm">Select Life Form to Equip</label>
+            <select id="selectedLifeForm">
+              <option value="">-- Select a Life Form --</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" id="equipTool">
+            Equip Selected Tool
+          </button>
+          <button class="btn btn-secondary" id="unequipTool">
+            Unequip Tool
+          </button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="war-tab">
+        <div class="war-panel">
+          <h2 class="panel-title">War & Factions</h2>
+          <p>
+            Manage factions and watch them battle for dominance in the
+            ecosystem.
+          </p>
+
+          <div class="factions">
+            <div class="faction">
+              <div class="faction-header">
+                <div
+                  class="faction-color"
+                  style="background-color: #ff6b6b"
+                ></div>
+                <h3>Red Faction</h3>
+              </div>
+              <div class="faction-stats">
+                <div class="faction-stat">
+                  <div class="stat-value" id="redPopulation">0</div>
+                  <div>Population</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="redStrength">0</div>
+                  <div>Strength</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="redTerritory">0</div>
+                  <div>Territory</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="redKills">0</div>
+                  <div>Enemies Defeated</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="redLoyalty">100%</div>
+                  <div>Loyalty</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="redRebels">0</div>
+                  <div>Rebels</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faction">
+              <div class="faction-header">
+                <div
+                  class="faction-color"
+                  style="background-color: #4a6fa5"
+                ></div>
+                <h3>Blue Faction</h3>
+              </div>
+              <div class="faction-stats">
+                <div class="faction-stat">
+                  <div class="stat-value" id="bluePopulation">0</div>
+                  <div>Population</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="blueStrength">0</div>
+                  <div>Strength</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="blueTerritory">0</div>
+                  <div>Territory</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="blueKills">0</div>
+                  <div>Enemies Defeated</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="blueLoyalty">100%</div>
+                  <div>Loyalty</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="blueRebels">0</div>
+                  <div>Rebels</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faction">
+              <div class="faction-header">
+                <div
+                  class="faction-color"
+                  style="background-color: #51cf66"
+                ></div>
+                <h3>Green Faction</h3>
+              </div>
+              <div class="faction-stats">
+                <div class="faction-stat">
+                  <div class="stat-value" id="greenPopulation">0</div>
+                  <div>Population</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="greenStrength">0</div>
+                  <div>Strength</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="greenTerritory">0</div>
+                  <div>Territory</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="greenKills">0</div>
+                  <div>Enemies Defeated</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="greenLoyalty">100%</div>
+                  <div>Loyalty</div>
+                </div>
+                <div class="faction-stat">
+                  <div class="stat-value" id="greenRebels">0</div>
+                  <div>Rebels</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="war-actions">
+            <button class="btn btn-war" id="declareWar">Declare War</button>
+            <button class="btn btn-success" id="peaceTreaty">
+              Peace Treaty
+            </button>
+            <button class="btn btn-warning" id="formAlliance">
+              Form Alliance
+            </button>
+            <button class="btn btn-secondary" id="neutralizeAll">
+              Neutralize All
+            </button>
+          </div>
+
+          <div
+            class="war-status"
+            style="
+              margin-top: 20px;
+              padding: 15px;
+              background: rgba(255, 255, 255, 0.05);
+              border-radius: 10px;
+            "
+          >
+            <h4>War Status</h4>
+            <div id="warStatusText">No active conflicts</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="rebellion-tab">
+        <div class="rebellion-panel">
+          <h2 class="panel-title">Rebellion & Uprising</h2>
+          <p>
+            Watch as discontent grows and rebels challenge the established
+            factions.
+          </p>
+
+          <div class="rebellion-status">
+            <div class="rebellion-faction">
+              <div class="rebellion-header">
+                <div class="rebellion-color"></div>
+                <h3>Rebel Alliance</h3>
+              </div>
+              <div class="rebellion-stats">
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebelPopulation">0</div>
+                  <div>Rebel Count</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebelStrength">0</div>
+                  <div>Strength</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebelHideouts">0</div>
+                  <div>Hideouts</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebelAttacks">0</div>
+                  <div>Attacks</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebelRecruitment">0%</div>
+                  <div>Recruitment Rate</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebelUprising">No</div>
+                  <div>Uprising Active</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rebellion-faction">
+              <div class="rebellion-header">
+                <div
+                  class="faction-color"
+                  style="background-color: #6c757d"
+                ></div>
+                <h3>Loyalty Overview</h3>
+              </div>
+              <div class="rebellion-stats">
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="totalRebels">0</div>
+                  <div>Total Rebels</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="avgLoyalty">100%</div>
+                  <div>Avg. Loyalty</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="rebellionRisk">Low</div>
+                  <div>Rebellion Risk</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="uprisingChance">5%</div>
+                  <div>Uprising Chance</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="propagandaPower">0</div>
+                  <div>Propaganda Power</div>
+                </div>
+                <div class="rebellion-stat">
+                  <div class="stat-value" id="suppressionPower">0</div>
+                  <div>Suppression Power</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rebellion-actions">
+            <button class="btn btn-rebellion" id="startUprising">
+              Start Uprising
+            </button>
+            <button class="btn btn-success" id="suppressRebels">
+              Suppress Rebels
+            </button>
+            <button class="btn btn-warning" id="negotiate">Negotiate</button>
+            <button class="btn btn-secondary" id="pardonRebels">
+              Pardon Rebels
+            </button>
+          </div>
+
+          <div
+            class="rebellion-status"
+            style="
+              margin-top: 20px;
+              padding: 15px;
+              background: rgba(255, 255, 255, 0.05);
+              border-radius: 10px;
+            "
+          >
+            <h4>Rebellion Status</h4>
+            <div id="rebellionStatusText">No active rebellion</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="leaders-tab">
+        <div class="leader-panel">
+          <h2 class="panel-title">Leaders & Governance</h2>
+          <p>
+            Manage leaders who can influence their factions and provide special
+            abilities.
+          </p>
+
+          <div class="leader-controls">
+            <button class="btn btn-warning" id="electLeader">
+              Elect Leader
+            </button>
+            <button class="btn btn-secondary" id="removeLeader">
+              Remove Leader
+            </button>
+            <button class="btn btn-primary" id="leaderAbility">
+              Use Leader Ability
+            </button>
+            <button class="btn btn-success" id="trainLeader">
+              Train Leader
+            </button>
+          </div>
+
+          <div class="leaders-list" id="leadersList">
+            <!-- Leaders will be added here dynamically -->
+          </div>
+
+          <div class="form-group" style="margin-top: 20px">
+            <label for="selectedFactionLeader">Select Faction for Leader</label>
+            <select id="selectedFactionLeader">
+              <option value="red">Red Faction</option>
+              <option value="blue">Blue Faction</option>
+              <option value="green">Green Faction</option>
+              <option value="yellow">Yellow Faction</option>
+              <option value="rebel">Rebel Alliance</option>
+            </select>
+          </div>
+
+          <div
+            class="leader-abilities-info"
+            style="
+              margin-top: 20px;
+              padding: 15px;
+              background: rgba(255, 255, 255, 0.05);
+              border-radius: 10px;
+            "
+          >
+            <h4>Leader Abilities</h4>
+            <div class="ability">
+              Morale Boost: Increases faction loyalty and combat effectiveness
+            </div>
+            <div class="ability">
+              Resource Bonus: Improves resource collection for faction members
+            </div>
+            <div class="ability">
+              Combat Tactics: Increases attack and defense for faction members
+            </div>
+            <div class="ability">
+              Diplomacy: Reduces aggression between factions
+            </div>
+            <div class="ability">
+              Rebel Suppression: Decreases rebellion risk
+            </div>
+            <div class="ability">
+              Propaganda: Increases loyalty and decreases rebel recruitment
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="notification" id="notification">
         Life form created successfully!
       </div>
@@ -858,10 +2129,13 @@
         // DOM Elements
         const lifeNameInput = document.getElementById("lifeName");
         const lifeTypeSelect = document.getElementById("lifeType");
+        const factionSelect = document.getElementById("faction");
         const colorOptions = document.querySelectorAll(".color-option");
         const hasEyesCheckbox = document.getElementById("hasEyes");
         const hasMouthCheckbox = document.getElementById("hasMouth");
         const hasLimbsCheckbox = document.getElementById("hasLimbs");
+        const hasWingsCheckbox = document.getElementById("hasWings");
+        const hasAntennaeCheckbox = document.getElementById("hasAntennae");
         const lifeDescriptionInput = document.getElementById("lifeDescription");
         const createLifeButton = document.getElementById("createLife");
         const resetButton = document.getElementById("resetForm");
@@ -882,10 +2156,15 @@
         const clearSimulationBtn = document.getElementById("clearSimulation");
         const lifeCountEl = document.getElementById("lifeCount");
         const foodCountEl = document.getElementById("foodCount");
+        const resourceCountEl = document.getElementById("resourceCount");
         const structureCountEl = document.getElementById("structureCount");
         const generationCountEl = document.getElementById("generationCount");
         const timeElapsedEl = document.getElementById("timeElapsed");
         const evolutionCountEl = document.getElementById("evolutionCount");
+        const toolCountEl = document.getElementById("toolCount");
+        const battleCountEl = document.getElementById("battleCount");
+        const rebellionCountEl = document.getElementById("rebellionCount");
+        const leaderCountEl = document.getElementById("leaderCount");
         const logEntriesEl = document.getElementById("logEntries");
 
         // Structure buttons
@@ -894,6 +2173,95 @@
         const addTreeBtn = document.getElementById("addTree");
         const addWaterBtn = document.getElementById("addWater");
         const addCrystalBtn = document.getElementById("addCrystal");
+
+        // Crafting buttons
+        const addResourcesBtn = document.getElementById("addResources");
+        const enableCraftingBtn = document.getElementById("enableCrafting");
+
+        // Tool buttons
+        const addToolsBtn = document.getElementById("addTools");
+        const addWeaponsBtn = document.getElementById("addWeapons");
+        const addMagicBtn = document.getElementById("addMagic");
+
+        // War buttons
+        const addFortsBtn = document.getElementById("addForts");
+        const enableWarfareBtn = document.getElementById("enableWarfare");
+        const addTowersBtn = document.getElementById("addTowers");
+
+        // Rebellion buttons
+        const addHideoutsBtn = document.getElementById("addHideouts");
+        const enableRebellionBtn = document.getElementById("enableRebellion");
+        const spreadPropagandaBtn = document.getElementById("spreadPropaganda");
+
+        // War tab elements
+        const declareWarBtn = document.getElementById("declareWar");
+        const peaceTreatyBtn = document.getElementById("peaceTreaty");
+        const formAllianceBtn = document.getElementById("formAlliance");
+        const neutralizeAllBtn = document.getElementById("neutralizeAll");
+        const warStatusText = document.getElementById("warStatusText");
+
+        // Rebellion tab elements
+        const startUprisingBtn = document.getElementById("startUprising");
+        const suppressRebelsBtn = document.getElementById("suppressRebels");
+        const negotiateBtn = document.getElementById("negotiate");
+        const pardonRebelsBtn = document.getElementById("pardonRebels");
+        const rebellionStatusText = document.getElementById(
+          "rebellionStatusText"
+        );
+
+        // Faction stats
+        const redPopulationEl = document.getElementById("redPopulation");
+        const redStrengthEl = document.getElementById("redStrength");
+        const redTerritoryEl = document.getElementById("redTerritory");
+        const redKillsEl = document.getElementById("redKills");
+        const redLoyaltyEl = document.getElementById("redLoyalty");
+        const redRebelsEl = document.getElementById("redRebels");
+
+        const bluePopulationEl = document.getElementById("bluePopulation");
+        const blueStrengthEl = document.getElementById("blueStrength");
+        const blueTerritoryEl = document.getElementById("blueTerritory");
+        const blueKillsEl = document.getElementById("blueKills");
+        const blueLoyaltyEl = document.getElementById("blueLoyalty");
+        const blueRebelsEl = document.getElementById("blueRebels");
+
+        const greenPopulationEl = document.getElementById("greenPopulation");
+        const greenStrengthEl = document.getElementById("greenStrength");
+        const greenTerritoryEl = document.getElementById("greenTerritory");
+        const greenKillsEl = document.getElementById("greenKills");
+        const greenLoyaltyEl = document.getElementById("greenLoyalty");
+        const greenRebelsEl = document.getElementById("greenRebels");
+
+        // Rebellion stats
+        const rebelPopulationEl = document.getElementById("rebelPopulation");
+        const rebelStrengthEl = document.getElementById("rebelStrength");
+        const rebelHideoutsEl = document.getElementById("rebelHideouts");
+        const rebelAttacksEl = document.getElementById("rebelAttacks");
+        const rebelRecruitmentEl = document.getElementById("rebelRecruitment");
+        const rebelUprisingEl = document.getElementById("rebelUprising");
+
+        const totalRebelsEl = document.getElementById("totalRebels");
+        const avgLoyaltyEl = document.getElementById("avgLoyalty");
+        const rebellionRiskEl = document.getElementById("rebellionRisk");
+        const uprisingChanceEl = document.getElementById("uprisingChance");
+        const propagandaPowerEl = document.getElementById("propagandaPower");
+        const suppressionPowerEl = document.getElementById("suppressionPower");
+
+        // Tools tab elements
+        const selectedLifeFormSelect =
+          document.getElementById("selectedLifeForm");
+        const equipToolBtn = document.getElementById("equipTool");
+        const unequipToolBtn = document.getElementById("unequipTool");
+        const toolItems = document.querySelectorAll(".tool-item");
+
+        // Leader elements
+        const electLeaderBtn = document.getElementById("electLeader");
+        const removeLeaderBtn = document.getElementById("removeLeader");
+        const leaderAbilityBtn = document.getElementById("leaderAbility");
+        const trainLeaderBtn = document.getElementById("trainLeader");
+        const selectedFactionLeader = document.getElementById(
+          "selectedFactionLeader"
+        );
+        const leadersList = document.getElementById("leadersList");
 
         // Tab functionality
         const tabs = document.querySelectorAll(".tab");
@@ -917,6 +2285,26 @@
             if (tabId === "simulation") {
               refreshSimulationGallery();
             }
+
+            // Refresh tools tab when switching to tools tab
+            if (tabId === "tools") {
+              refreshToolsTab();
+            }
+
+            // Refresh war tab when switching to war tab
+            if (tabId === "war") {
+              updateFactionStats();
+            }
+
+            // Refresh rebellion tab when switching to rebellion tab
+            if (tabId === "rebellion") {
+              updateRebellionStats();
+            }
+
+            // Refresh leaders tab when switching to leaders tab
+            if (tabId === "leaders") {
+              updateLeadersList();
+            }
           });
         });
 
@@ -925,6 +2313,7 @@
         let createdLifeForms = [];
         let simulatedLifeForms = [];
         let foodItems = [];
+        let resources = [];
         let structures = [];
         let simulationInterval = null;
         let simulationTime = 0;
@@ -932,7 +2321,164 @@
         let simulationSpeed = 1;
         let generation = 1;
         let evolutionCount = 0;
+        let battleCount = 0;
+        let rebellionCount = 0;
         let logEntries = [];
+        let craftingEnabled = false;
+        let warfareEnabled = false;
+        let rebellionEnabled = false;
+        let selectedTool = null;
+        let warStatus = "peace";
+        let rebellionStatus = "calm";
+        let alliances = [];
+        let factionKills = {
+          red: 0,
+          blue: 0,
+          green: 0,
+          yellow: 0,
+        };
+        let propagandaPower = 0;
+        let suppressionPower = 0;
+        let uprisingActive = false;
+        let uprisingChance = 5;
+        let leaders = [];
+        let leaderAbilities = {
+          moraleBoost: {
+            name: "Morale Boost",
+            description: "Increases faction loyalty and combat effectiveness",
+            effect: "loyalty",
+            value: 10,
+            cooldown: 30,
+          },
+          resourceBonus: {
+            name: "Resource Bonus",
+            description: "Improves resource collection for faction members",
+            effect: "resources",
+            value: 1.5,
+            cooldown: 20,
+          },
+          combatTactics: {
+            name: "Combat Tactics",
+            description: "Increases attack and defense for faction members",
+            effect: "combat",
+            value: 5,
+            cooldown: 25,
+          },
+          diplomacy: {
+            name: "Diplomacy",
+            description: "Reduces aggression between factions",
+            effect: "aggression",
+            value: -0.3,
+            cooldown: 40,
+          },
+          rebelSuppression: {
+            name: "Rebel Suppression",
+            description: "Decreases rebellion risk",
+            effect: "rebellion",
+            value: -10,
+            cooldown: 35,
+          },
+          propaganda: {
+            name: "Propaganda",
+            description: "Increases loyalty and decreases rebel recruitment",
+            effect: "propaganda",
+            value: 15,
+            cooldown: 30,
+          },
+        };
+
+        // Crafting recipes
+        const craftingRecipes = {
+          house: { wood: 5, stone: 3, type: "house" },
+          tool: { wood: 2, stone: 1, type: "tool" },
+          farm: { wood: 3, stone: 2, type: "farm" },
+          weapon: { wood: 1, metal: 2, type: "weapon" },
+          magic: { wood: 2, magic: 3, type: "magic" },
+          fort: { wood: 10, stone: 8, metal: 5, type: "fort" },
+          tower: { wood: 5, stone: 8, type: "tower" },
+          hideout: { wood: 8, stone: 5, metal: 3, type: "hideout" },
+        };
+
+        // Tool definitions
+        const tools = {
+          axe: {
+            name: "Axe",
+            type: "tool",
+            effect: "woodCollection",
+            value: 2,
+          },
+          pickaxe: {
+            name: "Pickaxe",
+            type: "tool",
+            effect: "mining",
+            value: 2,
+          },
+          hammer: {
+            name: "Hammer",
+            type: "tool",
+            effect: "building",
+            value: 1.5,
+          },
+          "fishing-rod": {
+            name: "Fishing Rod",
+            type: "tool",
+            effect: "fishing",
+            value: 1,
+          },
+          sword: { name: "Sword", type: "weapon", effect: "combat", value: 3 },
+          shield: {
+            name: "Shield",
+            type: "weapon",
+            effect: "defense",
+            value: 2,
+          },
+          staff: {
+            name: "Magic Staff",
+            type: "magic",
+            effect: "magic",
+            value: 2,
+          },
+          potion: {
+            name: "Healing Potion",
+            type: "magic",
+            effect: "healing",
+            value: 50,
+          },
+          compass: {
+            name: "Compass",
+            type: "tool",
+            effect: "navigation",
+            value: 1.2,
+          },
+          backpack: {
+            name: "Backpack",
+            type: "tool",
+            effect: "inventory",
+            value: 2,
+          },
+          lantern: {
+            name: "Lantern",
+            type: "tool",
+            effect: "vision",
+            value: 1.5,
+          },
+          spyglass: {
+            name: "Spyglass",
+            type: "tool",
+            effect: "vision",
+            value: 2,
+          },
+        };
+
+        // Faction colors
+        const factionColors = {
+          red: "#ff6b6b",
+          blue: "#4a6fa5",
+          green: "#51cf66",
+          yellow: "#f9c74f",
+          neutral: "#6c757d",
+          rebel: "#e83e8c",
+        };
 
         // Color selection
         colorOptions.forEach((option) => {
@@ -947,9 +2493,12 @@
         // Update preview when inputs change
         lifeNameInput.addEventListener("input", updatePreview);
         lifeTypeSelect.addEventListener("change", updatePreview);
+        factionSelect.addEventListener("change", updatePreview);
         hasEyesCheckbox.addEventListener("change", updatePreview);
         hasMouthCheckbox.addEventListener("change", updatePreview);
         hasLimbsCheckbox.addEventListener("change", updatePreview);
+        hasWingsCheckbox.addEventListener("change", updatePreview);
+        hasAntennaeCheckbox.addEventListener("change", updatePreview);
         lifeDescriptionInput.addEventListener("input", updatePreview);
 
         // Create life form
@@ -958,13 +2507,24 @@
             id: Date.now(),
             name: lifeNameInput.value || "Unnamed Life Form",
             type: lifeTypeSelect.value,
+            faction: factionSelect.value,
             color: selectedColor,
             hasEyes: hasEyesCheckbox.checked,
             hasMouth: hasMouthCheckbox.checked,
             hasLimbs: hasLimbsCheckbox.checked,
+            hasWings: hasWingsCheckbox.checked,
+            hasAntennae: hasAntennaeCheckbox.checked,
             description:
               lifeDescriptionInput.value || "No description provided",
             generation: 1,
+            equippedTool: null,
+            health: 100,
+            maxHealth: 100,
+            attack: 10,
+            defense: 5,
+            aggression: factionSelect.value === "neutral" ? 0 : 0.3,
+            loyalty: 100,
+            isRebel: false,
           };
 
           createdLifeForms.push(lifeForm);
@@ -976,10 +2536,13 @@
         resetButton.addEventListener("click", function () {
           lifeNameInput.value = "";
           lifeTypeSelect.value = "organic";
+          factionSelect.value = "neutral";
           colorOptions[0].click();
           hasEyesCheckbox.checked = true;
           hasMouthCheckbox.checked = true;
           hasLimbsCheckbox.checked = false;
+          hasWingsCheckbox.checked = false;
+          hasAntennaeCheckbox.checked = false;
           lifeDescriptionInput.value = "";
           updatePreview();
         });
@@ -997,6 +2560,55 @@
         addTreeBtn.addEventListener("click", () => addStructure("tree"));
         addWaterBtn.addEventListener("click", () => addStructure("water"));
         addCrystalBtn.addEventListener("click", () => addStructure("crystal"));
+
+        // Crafting controls
+        addResourcesBtn.addEventListener("click", addResources);
+        enableCraftingBtn.addEventListener("click", toggleCrafting);
+
+        // Tool controls
+        addToolsBtn.addEventListener("click", addTools);
+        addWeaponsBtn.addEventListener("click", addWeapons);
+        addMagicBtn.addEventListener("click", addMagic);
+
+        // War controls
+        addFortsBtn.addEventListener("click", addForts);
+        enableWarfareBtn.addEventListener("click", toggleWarfare);
+        addTowersBtn.addEventListener("click", addTowers);
+
+        // Rebellion controls
+        addHideoutsBtn.addEventListener("click", addHideouts);
+        enableRebellionBtn.addEventListener("click", toggleRebellion);
+        spreadPropagandaBtn.addEventListener("click", spreadPropaganda);
+
+        // War tab controls
+        declareWarBtn.addEventListener("click", declareWar);
+        peaceTreatyBtn.addEventListener("click", peaceTreaty);
+        formAllianceBtn.addEventListener("click", formAlliance);
+        neutralizeAllBtn.addEventListener("click", neutralizeAll);
+
+        // Rebellion tab controls
+        startUprisingBtn.addEventListener("click", startUprising);
+        suppressRebelsBtn.addEventListener("click", suppressRebels);
+        negotiateBtn.addEventListener("click", negotiate);
+        pardonRebelsBtn.addEventListener("click", pardonRebels);
+
+        // Tools tab controls
+        toolItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            toolItems.forEach((i) => i.classList.remove("selected"));
+            this.classList.add("selected");
+            selectedTool = this.getAttribute("data-tool");
+          });
+        });
+
+        equipToolBtn.addEventListener("click", equipTool);
+        unequipToolBtn.addEventListener("click", unequipTool);
+
+        // Leader controls
+        electLeaderBtn.addEventListener("click", electLeader);
+        removeLeaderBtn.addEventListener("click", removeLeader);
+        leaderAbilityBtn.addEventListener("click", useLeaderAbility);
+        trainLeaderBtn.addEventListener("click", trainLeader);
 
         // Update preview function
         function updatePreview() {
@@ -1032,6 +2644,19 @@
                         <div class="limb vertical right" style="background-color: ${selectedColor};"></div>
                     `;
           }
+
+          if (hasWingsCheckbox.checked) {
+            features.innerHTML += `
+                        <div class="limb horizontal top" style="background-color: ${selectedColor}; width: 80px; height: 20px; border-radius: 50%; top: -25px;"></div>
+                    `;
+          }
+
+          if (hasAntennaeCheckbox.checked) {
+            features.innerHTML += `
+                        <div class="limb vertical top" style="background-color: ${selectedColor}; width: 5px; height: 25px; top: -25px; left: 40%;"></div>
+                        <div class="limb vertical top" style="background-color: ${selectedColor}; width: 5px; height: 25px; top: -25px; right: 40%;"></div>
+                    `;
+          }
         }
 
         // Add life form to gallery
@@ -1043,6 +2668,14 @@
                     <div class="life-card-preview" style="background-color: ${
                       lifeForm.color
                     };">
+                        <div class="faction-indicator" style="background-color: ${
+                          factionColors[lifeForm.faction]
+                        };"></div>
+                        ${
+                          lifeForm.isRebel
+                            ? '<div class="rebel-indicator"></div>'
+                            : ""
+                        }
                         <div class="life-features">
                             ${
                               lifeForm.hasEyes
@@ -1071,11 +2704,37 @@
                             `
                                 : ""
                             }
+                            ${
+                              lifeForm.hasWings
+                                ? `
+                                <div class="limb horizontal top" style="background-color: ${lifeForm.color}; width: 40px; height: 10px; border-radius: 50%; top: -12px;"></div>
+                            `
+                                : ""
+                            }
+                            ${
+                              lifeForm.hasAntennae
+                                ? `
+                                <div class="limb vertical top" style="background-color: ${lifeForm.color}; width: 3px; height: 12px; top: -12px; left: 40%;"></div>
+                                <div class="limb vertical top" style="background-color: ${lifeForm.color}; width: 3px; height: 12px; top: -12px; right: 40%;"></div>
+                            `
+                                : ""
+                            }
                         </div>
                     </div>
                     <h3>${lifeForm.name}</h3>
                     <p>Type: ${lifeForm.type}</p>
+                    <p>Faction: ${lifeForm.faction}</p>
                     <p>Generation: ${lifeForm.generation}</p>
+                    ${
+                      lifeForm.isRebel
+                        ? '<p style="color: #e83e8c;">REBEL</p>'
+                        : ""
+                    }
+                    ${
+                      lifeForm.equippedTool
+                        ? `<p>Tool: ${tools[lifeForm.equippedTool].name}</p>`
+                        : ""
+                    }
                 `;
 
           lifeCard.addEventListener("click", () => {
@@ -1103,6 +2762,14 @@
                         <div class="life-card-preview" style="background-color: ${
                           lifeForm.color
                         };">
+                            <div class="faction-indicator" style="background-color: ${
+                              factionColors[lifeForm.faction]
+                            };"></div>
+                            ${
+                              lifeForm.isRebel
+                                ? '<div class="rebel-indicator"></div>'
+                                : ""
+                            }
                             <div class="life-features">
                                 ${
                                   lifeForm.hasEyes
@@ -1131,11 +2798,39 @@
                                 `
                                     : ""
                                 }
+                                ${
+                                  lifeForm.hasWings
+                                    ? `
+                                    <div class="limb horizontal top" style="background-color: ${lifeForm.color}; width: 40px; height: 10px; border-radius: 50%; top: -12px;"></div>
+                                `
+                                    : ""
+                                }
+                                ${
+                                  lifeForm.hasAntennae
+                                    ? `
+                                    <div class="limb vertical top" style="background-color: ${lifeForm.color}; width: 3px; height: 12px; top: -12px; left: 40%;"></div>
+                                    <div class="limb vertical top" style="background-color: ${lifeForm.color}; width: 3px; height: 12px; top: -12px; right: 40%;"></div>
+                                `
+                                    : ""
+                                }
                             </div>
                         </div>
                         <h3>${lifeForm.name}</h3>
                         <p>Type: ${lifeForm.type}</p>
+                        <p>Faction: ${lifeForm.faction}</p>
                         <p>Generation: ${lifeForm.generation}</p>
+                        ${
+                          lifeForm.isRebel
+                            ? '<p style="color: #e83e8c;">REBEL</p>'
+                            : ""
+                        }
+                        ${
+                          lifeForm.equippedTool
+                            ? `<p>Tool: ${
+                                tools[lifeForm.equippedTool].name
+                              }</p>`
+                            : ""
+                        }
                         <button class="btn btn-primary add-to-sim" style="margin-top: 10px;">Add to Simulation</button>
                     `;
 
@@ -1150,6 +2845,21 @@
           });
         }
 
+        // Refresh tools tab
+        function refreshToolsTab() {
+          selectedLifeFormSelect.innerHTML =
+            '<option value="">-- Select a Life Form --</option>';
+
+          createdLifeForms.forEach((lifeForm) => {
+            const option = document.createElement("option");
+            option.value = lifeForm.id;
+            option.textContent = `${lifeForm.name} (${lifeForm.faction})${
+              lifeForm.isRebel ? " [REBEL]" : ""
+            }`;
+            selectedLifeFormSelect.appendChild(option);
+          });
+        }
+
         // Add life form to simulation
         function addLifeToSimulation(lifeForm) {
           const simulatedLife = {
@@ -1161,11 +2871,35 @@
             speed: 0.5 + Math.random() * 2,
             direction: Math.random() * Math.PI * 2,
             energy: 100,
+            health: lifeForm.health,
+            maxHealth: lifeForm.maxHealth,
+            attack: lifeForm.attack,
+            defense: lifeForm.defense,
+            aggression: lifeForm.aggression,
+            loyalty: lifeForm.loyalty,
+            isRebel: lifeForm.isRebel,
             age: 0,
             maxAge: 100 + Math.floor(Math.random() * 100),
             reproductionCooldown: 0,
             generation: lifeForm.generation || 1,
             inShelter: false,
+            inventory: {
+              wood: 0,
+              stone: 0,
+              crystal: 0,
+              metal: 0,
+              magic: 0,
+            },
+            hasTool: false,
+            hasWeapon: false,
+            hasMagic: false,
+            craftingCooldown: 0,
+            craftingTarget: null,
+            equippedTool: lifeForm.equippedTool,
+            combatCooldown: 0,
+            target: null,
+            inCombat: false,
+            rebellionCooldown: 0,
           };
 
           simulatedLifeForms.push(simulatedLife);
@@ -1187,6 +2921,149 @@
           renderSimulation();
         }
 
+        // Add resources to simulation
+        function addResources() {
+          for (let i = 0; i < 10; i++) {
+            const resourceTypes = [
+              "wood",
+              "stone",
+              "crystal",
+              "metal",
+              "magic",
+            ];
+            const type =
+              resourceTypes[Math.floor(Math.random() * resourceTypes.length)];
+
+            const resource = {
+              id: Date.now() + i,
+              type: type,
+              x: Math.random() * (ecosystem.offsetWidth - 8),
+              y: Math.random() * (ecosystem.offsetHeight - 8),
+            };
+
+            resources.push(resource);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification("Resources added to the ecosystem!", "crafting");
+        }
+
+        // Add tools to simulation
+        function addTools() {
+          for (let i = 0; i < 5; i++) {
+            const tool = {
+              id: Date.now() + i,
+              type: "tool",
+              x: Math.random() * (ecosystem.offsetWidth - 20),
+              y: Math.random() * (ecosystem.offsetHeight - 20),
+            };
+
+            structures.push(tool);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification("Tools added to the ecosystem!", "tool");
+        }
+
+        // Add weapons to simulation
+        function addWeapons() {
+          for (let i = 0; i < 3; i++) {
+            const weapon = {
+              id: Date.now() + i,
+              type: "weapon",
+              x: Math.random() * (ecosystem.offsetWidth - 25),
+              y: Math.random() * (ecosystem.offsetHeight - 5),
+            };
+
+            structures.push(weapon);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification("Weapons added to the ecosystem!", "weapon");
+        }
+
+        // Add magic to simulation
+        function addMagic() {
+          for (let i = 0; i < 3; i++) {
+            const magic = {
+              id: Date.now() + i,
+              type: "magic",
+              x: Math.random() * (ecosystem.offsetWidth - 15),
+              y: Math.random() * (ecosystem.offsetHeight - 15),
+            };
+
+            structures.push(magic);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification("Magic items added to the ecosystem!", "magic");
+        }
+
+        // Add forts to simulation
+        function addForts() {
+          for (let i = 0; i < 2; i++) {
+            const fort = {
+              id: Date.now() + i,
+              type: "fort",
+              x: Math.random() * (ecosystem.offsetWidth - 100),
+              y: Math.random() * (ecosystem.offsetHeight - 100),
+              width: 100,
+              height: 100,
+              faction:
+                Object.keys(factionColors)[Math.floor(Math.random() * 4)],
+            };
+
+            structures.push(fort);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification("Forts added to the ecosystem!", "war");
+        }
+
+        // Add towers to simulation
+        function addTowers() {
+          for (let i = 0; i < 3; i++) {
+            const tower = {
+              id: Date.now() + i,
+              type: "tower",
+              x: Math.random() * (ecosystem.offsetWidth - 30),
+              y: Math.random() * (ecosystem.offsetHeight - 50),
+              width: 30,
+              height: 50,
+              faction:
+                Object.keys(factionColors)[Math.floor(Math.random() * 4)],
+            };
+
+            structures.push(tower);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification("Watchtowers added to the ecosystem!", "war");
+        }
+
+        // Add hideouts to simulation
+        function addHideouts() {
+          for (let i = 0; i < 3; i++) {
+            const hideout = {
+              id: Date.now() + i,
+              type: "hideout",
+              x: Math.random() * (ecosystem.offsetWidth - 80),
+              y: Math.random() * (ecosystem.offsetHeight - 80),
+              width: 80,
+              height: 80,
+              faction: "rebel",
+            };
+
+            structures.push(hideout);
+          }
+          updateStats();
+          renderSimulation();
+          showNotification(
+            "Rebel hideouts added to the ecosystem!",
+            "rebellion"
+          );
+        }
+
         // Add structure to simulation
         function addStructure(type) {
           const size =
@@ -1200,15 +3077,38 @@
               ? 100
               : type === "crystal"
               ? 50
+              : type === "tool"
+              ? 20
+              : type === "weapon"
+              ? 25
+              : type === "magic"
+              ? 15
+              : type === "fort"
+              ? 100
+              : type === "tower"
+              ? 30
+              : type === "hideout"
+              ? 80
+              : type === "farm"
+              ? 60
               : 60;
+
+          const height = type === "tower" ? 50 : size;
+          const width = type === "weapon" ? 25 : size;
 
           const structure = {
             id: Date.now(),
             type: type,
-            x: Math.random() * (ecosystem.offsetWidth - size),
-            y: Math.random() * (ecosystem.offsetHeight - size),
-            width: size,
-            height: size,
+            x: Math.random() * (ecosystem.offsetWidth - width),
+            y: Math.random() * (ecosystem.offsetHeight - height),
+            width: width,
+            height: height,
+            faction:
+              type === "fort" || type === "tower"
+                ? Object.keys(factionColors)[Math.floor(Math.random() * 4)]
+                : type === "hideout"
+                ? "rebel"
+                : "neutral",
           };
 
           structures.push(structure);
@@ -1216,6 +3116,452 @@
           showNotification(`Added a ${type} to the ecosystem`, "structure");
           updateStats();
           renderSimulation();
+        }
+
+        // Equip tool to life form
+        function equipTool() {
+          const lifeFormId = selectedLifeFormSelect.value;
+          if (!lifeFormId || !selectedTool) {
+            showNotification(
+              "Please select both a life form and a tool",
+              "warning"
+            );
+            return;
+          }
+
+          const lifeForm = createdLifeForms.find((lf) => lf.id == lifeFormId);
+          if (lifeForm) {
+            lifeForm.equippedTool = selectedTool;
+
+            // Apply tool bonuses
+            if (selectedTool === "sword") {
+              lifeForm.attack += 5;
+            } else if (selectedTool === "shield") {
+              lifeForm.defense += 3;
+            } else if (selectedTool === "potion") {
+              lifeForm.maxHealth += 20;
+            }
+
+            showNotification(
+              `Equipped ${tools[selectedTool].name} to ${lifeForm.name}`,
+              "tool"
+            );
+            refreshSimulationGallery();
+            refreshToolsTab();
+          }
+        }
+
+        // Unequip tool from life form
+        function unequipTool() {
+          const lifeFormId = selectedLifeFormSelect.value;
+          if (!lifeFormId) {
+            showNotification("Please select a life form", "warning");
+            return;
+          }
+
+          const lifeForm = createdLifeForms.find((lf) => lf.id == lifeFormId);
+          if (lifeForm && lifeForm.equippedTool) {
+            const toolName = tools[lifeForm.equippedTool].name;
+
+            // Remove tool bonuses
+            if (lifeForm.equippedTool === "sword") {
+              lifeForm.attack -= 5;
+            } else if (lifeForm.equippedTool === "shield") {
+              lifeForm.defense -= 3;
+            } else if (lifeForm.equippedTool === "potion") {
+              lifeForm.maxHealth -= 20;
+            }
+
+            lifeForm.equippedTool = null;
+            showNotification(
+              `Unequipped ${toolName} from ${lifeForm.name}`,
+              "tool"
+            );
+            refreshSimulationGallery();
+            refreshToolsTab();
+          } else {
+            showNotification("This life form has no tool equipped", "warning");
+          }
+        }
+
+        // Toggle crafting
+        function toggleCrafting() {
+          craftingEnabled = !craftingEnabled;
+          enableCraftingBtn.textContent = craftingEnabled
+            ? "Disable Crafting"
+            : "Enable Crafting";
+          showNotification(
+            craftingEnabled ? "Crafting enabled!" : "Crafting disabled",
+            "crafting"
+          );
+        }
+
+        // Toggle warfare
+        function toggleWarfare() {
+          warfareEnabled = !warfareEnabled;
+          enableWarfareBtn.textContent = warfareEnabled
+            ? "Disable Warfare"
+            : "Enable Warfare";
+          showNotification(
+            warfareEnabled ? "Warfare enabled!" : "Warfare disabled",
+            "war"
+          );
+        }
+
+        // Toggle rebellion
+        function toggleRebellion() {
+          rebellionEnabled = !rebellionEnabled;
+          enableRebellionBtn.textContent = rebellionEnabled
+            ? "Disable Rebellion"
+            : "Enable Rebellion";
+          showNotification(
+            rebellionEnabled ? "Rebellion enabled!" : "Rebellion disabled",
+            "rebellion"
+          );
+        }
+
+        // Spread propaganda
+        function spreadPropaganda() {
+          propagandaPower += 10;
+          showNotification(
+            "Propaganda spread! Rebellion risk increased.",
+            "rebellion"
+          );
+
+          // Decrease loyalty for all non-rebel life forms
+          simulatedLifeForms.forEach((life) => {
+            if (!life.isRebel && life.template.faction !== "neutral") {
+              life.loyalty = Math.max(0, life.loyalty - 5);
+            }
+          });
+
+          updateRebellionStats();
+        }
+
+        // Declare war
+        function declareWar() {
+          warStatus = "war";
+          warStatusText.textContent = "All factions are at war!";
+          showNotification("War has been declared!", "war");
+
+          // Increase aggression for all life forms
+          simulatedLifeForms.forEach((life) => {
+            if (life.template.faction !== "neutral") {
+              life.aggression = 0.8;
+            }
+          });
+        }
+
+        // Peace treaty
+        function peaceTreaty() {
+          warStatus = "peace";
+          warStatusText.textContent =
+            "Peace treaty signed. No active conflicts.";
+          showNotification("Peace treaty signed!", "success");
+
+          // Decrease aggression for all life forms
+          simulatedLifeForms.forEach((life) => {
+            if (life.template.faction !== "neutral") {
+              life.aggression = 0.1;
+            }
+          });
+        }
+
+        // Form alliance
+        function formAlliance() {
+          warStatus = "alliance";
+          warStatusText.textContent = "Factions have formed alliances.";
+          showNotification("Alliances formed!", "info");
+        }
+
+        // Neutralize all
+        function neutralizeAll() {
+          warStatus = "peace";
+          warStatusText.textContent = "All factions neutralized.";
+          showNotification("All factions neutralized!", "warning");
+
+          // Set all life forms to neutral
+          simulatedLifeForms.forEach((life) => {
+            life.template.faction = "neutral";
+            life.aggression = 0;
+          });
+
+          createdLifeForms.forEach((life) => {
+            life.faction = "neutral";
+            life.aggression = 0;
+          });
+
+          refreshSimulationGallery();
+        }
+
+        // Start uprising
+        function startUprising() {
+          if (rebellionCount < 5) {
+            showNotification(
+              "Not enough rebels to start an uprising!",
+              "warning"
+            );
+            return;
+          }
+
+          uprisingActive = true;
+          rebellionStatus = "uprising";
+          rebellionStatusText.textContent =
+            "UPRISING IN PROGRESS! Rebels are attacking faction structures.";
+          showNotification("REBELLION UPRISING STARTED!", "rebellion");
+
+          // Rebels become more aggressive
+          simulatedLifeForms.forEach((life) => {
+            if (life.isRebel) {
+              life.aggression = 0.9;
+              life.attack += 5;
+            }
+          });
+        }
+
+        // Suppress rebels
+        function suppressRebels() {
+          suppressionPower += 10;
+          showNotification(
+            "Rebel suppression increased! Loyalty increased.",
+            "war"
+          );
+
+          // Increase loyalty for all non-rebel life forms
+          simulatedLifeForms.forEach((life) => {
+            if (!life.isRebel && life.template.faction !== "neutral") {
+              life.loyalty = Math.min(100, life.loyalty + 5);
+            }
+          });
+
+          // Decrease rebel aggression
+          simulatedLifeForms.forEach((life) => {
+            if (life.isRebel) {
+              life.aggression = Math.max(0.1, life.aggression - 0.1);
+            }
+          });
+
+          updateRebellionStats();
+        }
+
+        // Negotiate with rebels
+        function negotiate() {
+          if (rebellionCount < 3) {
+            showNotification("Not enough rebels to negotiate with!", "warning");
+            return;
+          }
+
+          // Chance to end uprising
+          if (uprisingActive && Math.random() < 0.3) {
+            uprisingActive = false;
+            rebellionStatus = "calm";
+            rebellionStatusText.textContent =
+              "Negotiations successful! Uprising ended.";
+            showNotification(
+              "Negotiations successful! Uprising ended.",
+              "success"
+            );
+          } else {
+            // Increase loyalty for some rebels
+            let negotiated = 0;
+            simulatedLifeForms.forEach((life) => {
+              if (life.isRebel && Math.random() < 0.2) {
+                life.loyalty += 20;
+                if (life.loyalty >= 70) {
+                  life.isRebel = false;
+                  negotiated++;
+                }
+              }
+            });
+
+            if (negotiated > 0) {
+              showNotification(
+                `Negotiated with ${negotiated} rebels!`,
+                "success"
+              );
+            } else {
+              showNotification(
+                "Negotiations failed. Rebels remain hostile.",
+                "warning"
+              );
+            }
+          }
+
+          updateRebellionStats();
+        }
+
+        // Pardon rebels
+        function pardonRebels() {
+          let pardoned = 0;
+          simulatedLifeForms.forEach((life) => {
+            if (life.isRebel && Math.random() < 0.5) {
+              life.isRebel = false;
+              life.loyalty = 80;
+              pardoned++;
+            }
+          });
+
+          if (pardoned > 0) {
+            showNotification(`Pardoned ${pardoned} rebels!`, "success");
+            updateRebellionStats();
+          } else {
+            showNotification("No rebels accepted the pardon.", "warning");
+          }
+        }
+
+        // Update faction stats
+        function updateFactionStats() {
+          const redFaction = simulatedLifeForms.filter(
+            (life) => life.template.faction === "red"
+          );
+          const blueFaction = simulatedLifeForms.filter(
+            (life) => life.template.faction === "blue"
+          );
+          const greenFaction = simulatedLifeForms.filter(
+            (life) => life.template.faction === "green"
+          );
+
+          redPopulationEl.textContent = redFaction.length;
+          bluePopulationEl.textContent = blueFaction.length;
+          greenPopulationEl.textContent = greenFaction.length;
+
+          // Calculate faction strength
+          const redStrength = redFaction.reduce(
+            (sum, life) => sum + life.attack + life.defense,
+            0
+          );
+          const blueStrength = blueFaction.reduce(
+            (sum, life) => sum + life.attack + life.defense,
+            0
+          );
+          const greenStrength = greenFaction.reduce(
+            (sum, life) => sum + life.attack + life.defense,
+            0
+          );
+
+          redStrengthEl.textContent = redStrength;
+          blueStrengthEl.textContent = blueStrength;
+          greenStrengthEl.textContent = greenStrength;
+
+          // Calculate territory (based on structures)
+          const redTerritory = structures.filter(
+            (s) => s.faction === "red"
+          ).length;
+          const blueTerritory = structures.filter(
+            (s) => s.faction === "blue"
+          ).length;
+          const greenTerritory = structures.filter(
+            (s) => s.faction === "green"
+          ).length;
+
+          redTerritoryEl.textContent = redTerritory;
+          blueTerritoryEl.textContent = blueTerritory;
+          greenTerritoryEl.textContent = greenTerritory;
+
+          // Update kills
+          redKillsEl.textContent = factionKills.red;
+          blueKillsEl.textContent = factionKills.blue;
+          greenKillsEl.textContent = factionKills.green;
+
+          // Calculate loyalty and rebels
+          const redLoyalty =
+            redFaction.length > 0
+              ? Math.round(
+                  redFaction.reduce((sum, life) => sum + life.loyalty, 0) /
+                    redFaction.length
+                )
+              : 100;
+          const blueLoyalty =
+            blueFaction.length > 0
+              ? Math.round(
+                  blueFaction.reduce((sum, life) => sum + life.loyalty, 0) /
+                    blueFaction.length
+                )
+              : 100;
+          const greenLoyalty =
+            greenFaction.length > 0
+              ? Math.round(
+                  greenFaction.reduce((sum, life) => sum + life.loyalty, 0) /
+                    greenFaction.length
+                )
+              : 100;
+
+          redLoyaltyEl.textContent = `${redLoyalty}%`;
+          blueLoyaltyEl.textContent = `${blueLoyalty}%`;
+          greenLoyaltyEl.textContent = `${greenLoyalty}%`;
+
+          const redRebels = redFaction.filter((life) => life.isRebel).length;
+          const blueRebels = blueFaction.filter((life) => life.isRebel).length;
+          const greenRebels = greenFaction.filter(
+            (life) => life.isRebel
+          ).length;
+
+          redRebelsEl.textContent = redRebels;
+          blueRebelsEl.textContent = blueRebels;
+          greenRebelsEl.textContent = greenRebels;
+        }
+
+        // Update rebellion stats
+        function updateRebellionStats() {
+          const rebels = simulatedLifeForms.filter((life) => life.isRebel);
+          const hideouts = structures.filter((s) => s.type === "hideout");
+
+          rebellionCount = rebels.length;
+          rebellionCountEl.textContent = rebellionCount;
+
+          rebelPopulationEl.textContent = rebellionCount;
+          rebelStrengthEl.textContent = rebels.reduce(
+            (sum, life) => sum + life.attack + life.defense,
+            0
+          );
+          rebelHideoutsEl.textContent = hideouts.length;
+
+          // Calculate average loyalty of non-rebels
+          const nonRebels = simulatedLifeForms.filter(
+            (life) => !life.isRebel && life.template.faction !== "neutral"
+          );
+          const avgLoyalty =
+            nonRebels.length > 0
+              ? Math.round(
+                  nonRebels.reduce((sum, life) => sum + life.loyalty, 0) /
+                    nonRebels.length
+                )
+              : 100;
+
+          avgLoyaltyEl.textContent = `${avgLoyalty}%`;
+
+          // Calculate rebellion risk
+          let risk = "Low";
+          if (avgLoyalty < 70) risk = "Medium";
+          if (avgLoyalty < 50) risk = "High";
+          if (avgLoyalty < 30) risk = "Critical";
+
+          rebellionRiskEl.textContent = risk;
+
+          // Calculate uprising chance based on various factors
+          uprisingChance = Math.min(
+            95,
+            5 +
+              (100 - avgLoyalty) / 2 +
+              rebellionCount / 2 +
+              propagandaPower / 10 -
+              suppressionPower / 10
+          );
+
+          uprisingChanceEl.textContent = `${Math.round(uprisingChance)}%`;
+
+          propagandaPowerEl.textContent = propagandaPower;
+          suppressionPowerEl.textContent = suppressionPower;
+
+          rebelUprisingEl.textContent = uprisingActive ? "YES" : "No";
+          totalRebelsEl.textContent = rebellionCount;
+
+          // Calculate recruitment rate
+          const recruitmentRate = Math.min(
+            100,
+            rebellionCount * 2 + propagandaPower - suppressionPower
+          );
+          rebelRecruitmentEl.textContent = `${recruitmentRate}%`;
         }
 
         // Speed up simulation
@@ -1238,6 +3584,9 @@
               simulationTime++;
               timeElapsedEl.textContent = `${simulationTime}s`;
 
+              // Update leaders
+              updateLeadersInSimulation();
+
               // Update life forms
               simulatedLifeForms.forEach((life, index) => {
                 // Age the life form
@@ -1253,6 +3602,8 @@
                     "death"
                   );
                   updateStats();
+                  updateFactionStats();
+                  updateRebellionStats();
                   return;
                 }
 
@@ -1272,6 +3623,423 @@
                   life.y >= ecosystem.offsetHeight - life.size
                 ) {
                   life.direction = -life.direction;
+                }
+
+                // Rebellion behavior
+                if (
+                  rebellionEnabled &&
+                  life.rebellionCooldown <= 0 &&
+                  !life.isRebel &&
+                  life.template.faction !== "neutral"
+                ) {
+                  // Chance to become rebel based on loyalty
+                  if (life.loyalty < 50 && Math.random() < 0.01) {
+                    life.isRebel = true;
+                    life.loyalty = 20;
+                    rebellionCount++;
+
+                    addLogEntry(
+                      `${life.template.name} has joined the rebellion!`,
+                      "rebellion"
+                    );
+
+                    showNotification(
+                      `${life.template.name} has joined the rebellion!`,
+                      "rebellion"
+                    );
+
+                    updateRebellionStats();
+                  }
+
+                  // Propaganda effect
+                  if (propagandaPower > 0 && Math.random() < 0.05) {
+                    life.loyalty = Math.max(0, life.loyalty - 1);
+                  }
+
+                  // Suppression effect
+                  if (suppressionPower > 0 && Math.random() < 0.03) {
+                    life.loyalty = Math.min(100, life.loyalty + 1);
+                  }
+
+                  life.rebellionCooldown = 10;
+                }
+
+                if (life.rebellionCooldown > 0) {
+                  life.rebellionCooldown--;
+                }
+
+                // Rebel-specific behavior
+                if (life.isRebel && life.rebellionCooldown <= 0) {
+                  // Rebels attack faction structures
+                  if (uprisingActive && Math.random() < 0.05) {
+                    structures.forEach((structure, structureIndex) => {
+                      if (
+                        structure.faction !== "rebel" &&
+                        structure.faction !== "neutral"
+                      ) {
+                        const dx = life.x - (structure.x + structure.width / 2);
+                        const dy =
+                          life.y - (structure.y + structure.height / 2);
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (
+                          distance <
+                          life.size / 2 +
+                            Math.max(structure.width, structure.height) / 2
+                        ) {
+                          // Rebel attacks structure
+                          if (Math.random() < 0.3) {
+                            structures.splice(structureIndex, 1);
+                            addLogEntry(
+                              `Rebels destroyed a ${structure.type}!`,
+                              "rebellion"
+                            );
+
+                            createCombatParticles(life.x, life.y);
+                            life.rebellionCooldown = 30;
+                          }
+                        }
+                      }
+                    });
+                  }
+
+                  // Rebels recruit others
+                  if (Math.random() < 0.01) {
+                    simulatedLifeForms.forEach((otherLife) => {
+                      if (
+                        !otherLife.isRebel &&
+                        otherLife.template.faction !== "neutral" &&
+                        otherLife.template.faction !== life.template.faction
+                      ) {
+                        const dx = life.x - otherLife.x;
+                        const dy = life.y - otherLife.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < life.size / 2 && Math.random() < 0.1) {
+                          otherLife.loyalty = Math.max(
+                            0,
+                            otherLife.loyalty - 10
+                          );
+
+                          if (otherLife.loyalty < 30 && Math.random() < 0.5) {
+                            otherLife.isRebel = true;
+                            rebellionCount++;
+
+                            addLogEntry(
+                              `${otherLife.template.name} was recruited by rebels!`,
+                              "rebellion"
+                            );
+                          }
+                        }
+                      }
+                    });
+                  }
+                }
+
+                // Combat behavior
+                if (
+                  warfareEnabled &&
+                  life.combatCooldown <= 0 &&
+                  life.template.faction !== "neutral"
+                ) {
+                  // Look for enemies to attack
+                  simulatedLifeForms.forEach((otherLife, otherIndex) => {
+                    if (index === otherIndex) return;
+
+                    // Check if other life is an enemy
+                    const isEnemy =
+                      // Faction enemies
+                      (otherLife.template.faction !== life.template.faction &&
+                        otherLife.template.faction !== "neutral") ||
+                      // Rebels attack everyone, everyone attacks rebels
+                      (life.isRebel && !otherLife.isRebel) ||
+                      (!life.isRebel && otherLife.isRebel);
+
+                    if (isEnemy) {
+                      const dx = life.x - otherLife.x;
+                      const dy = life.y - otherLife.y;
+                      const distance = Math.sqrt(dx * dx + dy * dy);
+
+                      // If enemy is close and aggression check passes
+                      if (
+                        distance < life.size &&
+                        Math.random() < life.aggression
+                      ) {
+                        life.target = otherLife;
+                        life.inCombat = true;
+                        life.combatCooldown = 20;
+
+                        // Calculate damage
+                        const damage = Math.max(
+                          1,
+                          life.attack - otherLife.defense
+                        );
+                        otherLife.health -= damage;
+
+                        // Create combat particles
+                        createCombatParticles(life.x, life.y);
+
+                        battleCount++;
+                        battleCountEl.textContent = battleCount;
+
+                        addLogEntry(
+                          `${life.template.name} (${
+                            life.isRebel ? "REBEL" : life.template.faction
+                          }) attacked ${otherLife.template.name} (${
+                            otherLife.isRebel
+                              ? "REBEL"
+                              : otherLife.template.faction
+                          }) for ${damage} damage!`,
+                          life.isRebel ? "rebellion" : "war"
+                        );
+
+                        // Check if enemy died
+                        if (otherLife.health <= 0) {
+                          simulatedLifeForms.splice(otherIndex, 1);
+
+                          if (!life.isRebel) {
+                            factionKills[life.template.faction] =
+                              (factionKills[life.template.faction] || 0) + 1;
+                          }
+
+                          addLogEntry(
+                            `${life.template.name} (${
+                              life.isRebel ? "REBEL" : life.template.faction
+                            }) defeated ${otherLife.template.name} (${
+                              otherLife.isRebel
+                                ? "REBEL"
+                                : otherLife.template.faction
+                            })!`,
+                            life.isRebel ? "rebellion" : "war"
+                          );
+
+                          showNotification(
+                            `${life.template.name} defeated ${otherLife.template.name} in battle!`,
+                            life.isRebel ? "rebellion" : "war"
+                          );
+
+                          updateStats();
+                          updateFactionStats();
+                          updateRebellionStats();
+                        }
+                      }
+                    }
+                  });
+                }
+
+                if (life.combatCooldown > 0) {
+                  life.combatCooldown--;
+                } else {
+                  life.inCombat = false;
+                  life.target = null;
+                }
+
+                // Collect resources
+                if (craftingEnabled) {
+                  resources.forEach((resource, resourceIndex) => {
+                    const dx = life.x - resource.x;
+                    const dy = life.y - resource.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < life.size / 2) {
+                      // Collect resource
+                      resources.splice(resourceIndex, 1);
+
+                      // Apply tool effects
+                      let collectionMultiplier = 1;
+                      if (life.equippedTool) {
+                        const tool = tools[life.equippedTool];
+                        if (
+                          tool.effect === "woodCollection" &&
+                          resource.type === "wood"
+                        ) {
+                          collectionMultiplier = tool.value;
+                        } else if (
+                          tool.effect === "mining" &&
+                          (resource.type === "stone" ||
+                            resource.type === "metal")
+                        ) {
+                          collectionMultiplier = tool.value;
+                        }
+                      }
+
+                      life.inventory[resource.type] += collectionMultiplier;
+                      addLogEntry(
+                        `${life.template.name} collected ${resource.type}`,
+                        "crafting"
+                      );
+
+                      // Tools increase collection efficiency
+                      if (life.hasTool) {
+                        life.inventory[resource.type]++; // Bonus resource
+                      }
+                    }
+                  });
+                }
+
+                // Crafting behavior
+                if (craftingEnabled && life.craftingCooldown <= 0) {
+                  // Decide what to craft based on inventory
+                  if (
+                    life.inventory.wood >= 5 &&
+                    life.inventory.stone >= 3 &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "house";
+                    life.craftingCooldown = 100;
+                  } else if (
+                    life.inventory.wood >= 2 &&
+                    life.inventory.stone >= 1 &&
+                    !life.hasTool &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "tool";
+                    life.craftingCooldown = 50;
+                  } else if (
+                    life.inventory.wood >= 3 &&
+                    life.inventory.stone >= 2 &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "farm";
+                    life.craftingCooldown = 80;
+                  } else if (
+                    life.inventory.wood >= 1 &&
+                    life.inventory.metal >= 2 &&
+                    !life.hasWeapon &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "weapon";
+                    life.craftingCooldown = 70;
+                  } else if (
+                    life.inventory.wood >= 2 &&
+                    life.inventory.magic >= 3 &&
+                    !life.hasMagic &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "magic";
+                    life.craftingCooldown = 90;
+                  } else if (
+                    life.inventory.wood >= 10 &&
+                    life.inventory.stone >= 8 &&
+                    life.inventory.metal >= 5 &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "fort";
+                    life.craftingCooldown = 150;
+                  } else if (
+                    life.inventory.wood >= 5 &&
+                    life.inventory.stone >= 8 &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "tower";
+                    life.craftingCooldown = 120;
+                  } else if (
+                    life.isRebel &&
+                    life.inventory.wood >= 8 &&
+                    life.inventory.stone >= 5 &&
+                    life.inventory.metal >= 3 &&
+                    !life.craftingTarget
+                  ) {
+                    life.craftingTarget = "hideout";
+                    life.craftingCooldown = 100;
+                  }
+
+                  // Execute crafting
+                  if (life.craftingTarget && life.craftingCooldown <= 0) {
+                    const recipe = craftingRecipes[life.craftingTarget];
+                    let canCraft = true;
+
+                    // Check if we have enough resources
+                    for (const resource in recipe) {
+                      if (
+                        resource !== "type" &&
+                        life.inventory[resource] < recipe[resource]
+                      ) {
+                        canCraft = false;
+                        break;
+                      }
+                    }
+
+                    if (canCraft) {
+                      // Deduct resources
+                      for (const resource in recipe) {
+                        if (resource !== "type") {
+                          life.inventory[resource] -= recipe[resource];
+                        }
+                      }
+
+                      // Create structure with faction
+                      const structure = {
+                        id: Date.now(),
+                        type: recipe.type,
+                        x: life.x,
+                        y: life.y,
+                        width:
+                          recipe.type === "fort"
+                            ? 100
+                            : recipe.type === "tower"
+                            ? 30
+                            : recipe.type === "hideout"
+                            ? 80
+                            : recipe.type === "house"
+                            ? 80
+                            : 60,
+                        height:
+                          recipe.type === "tower"
+                            ? 50
+                            : recipe.type === "fort"
+                            ? 100
+                            : recipe.type === "hideout"
+                            ? 80
+                            : recipe.type === "house"
+                            ? 80
+                            : 60,
+                        faction: life.isRebel ? "rebel" : life.template.faction,
+                      };
+
+                      structures.push(structure);
+
+                      // Special effects
+                      if (recipe.type === "tool") {
+                        life.hasTool = true;
+                        life.speed *= 1.5; // Tools make movement faster
+                      } else if (recipe.type === "weapon") {
+                        life.hasWeapon = true;
+                        life.attack += 5;
+                      } else if (recipe.type === "magic") {
+                        life.hasMagic = true;
+                        life.maxAge *= 1.2; // Magic extends lifespan
+                      } else if (recipe.type === "fort") {
+                        // Fort provides defense bonus to faction members
+                        simulatedLifeForms.forEach((lf) => {
+                          if (
+                            lf.template.faction === life.template.faction &&
+                            !lf.isRebel
+                          ) {
+                            lf.defense += 2;
+                          }
+                        });
+                      } else if (recipe.type === "hideout") {
+                        // Hideout increases rebel recruitment
+                        propagandaPower += 5;
+                      }
+
+                      addLogEntry(
+                        `${life.template.name} crafted a ${life.craftingTarget}!`,
+                        "crafting"
+                      );
+                      showNotification(
+                        `${life.template.name} crafted a ${life.craftingTarget}!`,
+                        "crafting"
+                      );
+
+                      life.craftingTarget = null;
+                    }
+                  }
+                }
+
+                if (life.craftingCooldown > 0) {
+                  life.craftingCooldown--;
                 }
 
                 // Interact with structures
@@ -1316,13 +4084,106 @@
                         life.direction = Math.random() * Math.PI * 2;
                         break;
                       case "tree":
-                        // Trees provide occasional food
-                        if (Math.random() < 0.005) {
-                          addFood();
+                        // Trees provide occasional resources
+                        if (Math.random() < 0.005 && craftingEnabled) {
+                          resources.push({
+                            id: Date.now(),
+                            type: "wood",
+                            x: structure.x + Math.random() * structure.width,
+                            y: structure.y + Math.random() * structure.height,
+                          });
                           addLogEntry(
-                            `${life.template.name} found fruit from a tree!`,
-                            "birth"
+                            `${life.template.name} found wood from a tree!`,
+                            "crafting"
                           );
+                        }
+                        break;
+                      case "farm":
+                        // Farms generate food
+                        if (Math.random() < 0.01) {
+                          addFood();
+                          addLogEntry(`Farm produced food!`, "birth");
+                        }
+                        break;
+                      case "tool":
+                        // Tools can be picked up
+                        if (!life.hasTool) {
+                          life.hasTool = true;
+                          life.speed *= 1.5;
+                          structures = structures.filter(
+                            (s) => s.id !== structure.id
+                          );
+                          addLogEntry(
+                            `${life.template.name} picked up a tool!`,
+                            "tool"
+                          );
+                        }
+                        break;
+                      case "weapon":
+                        // Weapons can be picked up
+                        if (!life.hasWeapon) {
+                          life.hasWeapon = true;
+                          life.attack += 5;
+                          structures = structures.filter(
+                            (s) => s.id !== structure.id
+                          );
+                          addLogEntry(
+                            `${life.template.name} picked up a weapon!`,
+                            "weapon"
+                          );
+                        }
+                        break;
+                      case "magic":
+                        // Magic items can be picked up
+                        if (!life.hasMagic) {
+                          life.hasMagic = true;
+                          life.maxAge *= 1.2;
+                          structures = structures.filter(
+                            (s) => s.id !== structure.id
+                          );
+                          addLogEntry(
+                            `${life.template.name} picked up a magic item!`,
+                            "magic"
+                          );
+                        }
+                        break;
+                      case "fort":
+                        // Forts provide healing to faction members
+                        if (
+                          structure.faction === life.template.faction &&
+                          !life.isRebel
+                        ) {
+                          life.health = Math.min(
+                            life.maxHealth,
+                            life.health + 0.1
+                          );
+                          life.energy = Math.min(100, life.energy + 0.2);
+                          life.loyalty = Math.min(100, life.loyalty + 0.1);
+                        }
+                        break;
+                      case "tower":
+                        // Towers increase vision for faction members
+                        if (
+                          structure.faction === life.template.faction &&
+                          !life.isRebel
+                        ) {
+                          // Enhanced vision logic would go here
+                          life.loyalty = Math.min(100, life.loyalty + 0.05);
+                        }
+                        break;
+                      case "hideout":
+                        // Hideouts provide benefits to rebels
+                        if (life.isRebel) {
+                          life.health = Math.min(
+                            life.maxHealth,
+                            life.health + 0.2
+                          );
+                          life.energy = Math.min(100, life.energy + 0.3);
+
+                          // Chance to increase propaganda
+                          if (Math.random() < 0.01) {
+                            propagandaPower += 1;
+                          }
                         }
                         break;
                     }
@@ -1351,6 +4212,7 @@
                     // Eat food
                     foodItems.splice(foodIndex, 1);
                     life.energy = Math.min(100, life.energy + 30);
+                    life.health = Math.min(life.maxHealth, life.health + 10);
                     addLogEntry(`${life.template.name} found food!`, "birth");
                   }
                 });
@@ -1358,14 +4220,18 @@
                 // Lose energy (less if in shelter)
                 life.energy -= life.inShelter ? 0.05 : 0.1;
 
-                // Die if no energy
-                if (life.energy <= 0) {
+                // Die if no energy or health
+                if (life.energy <= 0 || life.health <= 0) {
                   simulatedLifeForms.splice(index, 1);
+                  const cause =
+                    life.energy <= 0 ? "lack of energy" : "injuries";
                   addLogEntry(
-                    `${life.template.name} (Gen ${life.generation}) died from lack of energy`,
+                    `${life.template.name} (Gen ${life.generation}) died from ${cause}`,
                     "death"
                   );
                   updateStats();
+                  updateFactionStats();
+                  updateRebellionStats();
                   return;
                 }
 
@@ -1384,15 +4250,71 @@
                 }
               });
 
+              // Farms generate food
+              structures.forEach((structure) => {
+                if (structure.type === "farm" && Math.random() < 0.005) {
+                  addFood();
+                }
+              });
+
               // Occasionally add food automatically
               if (Math.random() < 0.05) {
                 addFood();
               }
+
+              // Chance for spontaneous uprising
+              if (
+                rebellionEnabled &&
+                !uprisingActive &&
+                Math.random() * 100 < uprisingChance
+              ) {
+                startUprising();
+              }
             }
 
             updateStats();
+            updateFactionStats();
+            updateRebellionStats();
             renderSimulation();
           }, 100);
+        }
+
+        // Create combat particles
+        function createCombatParticles(x, y) {
+          for (let i = 0; i < 5; i++) {
+            const particle = document.createElement("div");
+            particle.className = "combat-particle";
+            particle.style.left = `${x + Math.random() * 30 - 15}px`;
+            particle.style.top = `${y + Math.random() * 30 - 15}px`;
+            particle.style.animationDelay = `${Math.random() * 0.5}s`;
+            ecosystem.appendChild(particle);
+
+            // Remove particle after animation
+            setTimeout(() => {
+              if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+              }
+            }, 500);
+          }
+        }
+
+        // Create rebellion particles
+        function createRebellionParticles(x, y) {
+          for (let i = 0; i < 3; i++) {
+            const particle = document.createElement("div");
+            particle.className = "rebellion-particle";
+            particle.style.left = `${x + Math.random() * 20 - 10}px`;
+            particle.style.top = `${y + Math.random() * 20 - 10}px`;
+            particle.style.animationDelay = `${Math.random() * 1}s`;
+            ecosystem.appendChild(particle);
+
+            // Remove particle after animation
+            setTimeout(() => {
+              if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+              }
+            }, 1000);
+          }
         }
 
         // Reproduction function
@@ -1415,6 +4337,8 @@
                   "#ff6b6b",
                   "#f9c74f",
                   "#9d4edd",
+                  "#6f42c1",
+                  "#e83e8c",
                 ];
                 childTemplate.color =
                   colors[Math.floor(Math.random() * colors.length)];
@@ -1446,12 +4370,21 @@
                     `${parent.template.name} evolved eyes!`,
                     "evolution"
                   );
+                } else if (!childTemplate.hasWings) {
+                  childTemplate.hasWings = true;
+                  childTemplate.name = `Winged ${parent.template.name}`;
+                  addLogEntry(
+                    `${parent.template.name} evolved wings!`,
+                    "evolution"
+                  );
                 }
                 break;
-              case 3: // Speed increase
-                childTemplate.name = `Swift ${parent.template.name}`;
+              case 3: // Combat evolution
+                childTemplate.name = `Warrior ${parent.template.name}`;
+                childTemplate.attack += 5;
+                childTemplate.defense += 3;
                 addLogEntry(
-                  `${parent.template.name} evolved to be faster!`,
+                  `${parent.template.name} evolved combat abilities!`,
                   "evolution"
                 );
                 break;
@@ -1489,11 +4422,29 @@
             speed: parent.speed * (0.9 + Math.random() * 0.2),
             direction: Math.random() * Math.PI * 2,
             energy: 50,
+            health: childTemplate.health,
+            maxHealth: childTemplate.maxHealth,
+            attack: childTemplate.attack,
+            defense: childTemplate.defense,
+            aggression: childTemplate.aggression,
+            loyalty: childTemplate.loyalty,
+            isRebel: childTemplate.isRebel,
             age: 0,
             maxAge: parent.maxAge * (0.9 + Math.random() * 0.2),
             reproductionCooldown: 100,
             generation: childTemplate.generation,
             inShelter: false,
+            inventory: { wood: 0, stone: 0, crystal: 0, metal: 0, magic: 0 },
+            hasTool: false,
+            hasWeapon: false,
+            hasMagic: false,
+            craftingCooldown: 0,
+            craftingTarget: null,
+            equippedTool: null,
+            combatCooldown: 0,
+            target: null,
+            inCombat: false,
+            rebellionCooldown: 0,
           };
 
           simulatedLifeForms.push(child);
@@ -1519,13 +4470,27 @@
           stopSimulation();
           simulatedLifeForms = [];
           foodItems = [];
+          resources = [];
           structures = [];
           simulationTime = 0;
           generation = 1;
           evolutionCount = 0;
+          battleCount = 0;
+          rebellionCount = 0;
           logEntries = [];
+          factionKills = { red: 0, blue: 0, green: 0, yellow: 0 };
+          propagandaPower = 0;
+          suppressionPower = 0;
+          uprisingActive = false;
+          uprisingChance = 5;
+          warStatus = "peace";
+          rebellionStatus = "calm";
+          leaders = [];
           logEntriesEl.innerHTML = "";
           updateStats();
+          updateFactionStats();
+          updateRebellionStats();
+          updateLeadersList();
           renderSimulation();
         }
 
@@ -1533,9 +4498,23 @@
         function updateStats() {
           lifeCountEl.textContent = simulatedLifeForms.length;
           foodCountEl.textContent = foodItems.length;
+          resourceCountEl.textContent = resources.length;
           structureCountEl.textContent = structures.length;
           generationCountEl.textContent = generation;
           evolutionCountEl.textContent = evolutionCount;
+          battleCountEl.textContent = battleCount;
+          rebellionCountEl.textContent = rebellionCount;
+          leaderCountEl.textContent = leaders.length;
+
+          // Count tools in use
+          const toolCount = simulatedLifeForms.filter(
+            (life) =>
+              life.hasTool ||
+              life.hasWeapon ||
+              life.hasMagic ||
+              life.equippedTool
+          ).length;
+          toolCountEl.textContent = toolCount;
         }
 
         // Render simulation
@@ -1550,7 +4529,22 @@
             structureEl.style.top = `${structure.y}px`;
             structureEl.style.width = `${structure.width}px`;
             structureEl.style.height = `${structure.height}px`;
+
+            // Add faction color to forts and towers
+            if (structure.type === "fort" || structure.type === "tower") {
+              structureEl.style.borderColor = factionColors[structure.faction];
+            }
+
             ecosystem.appendChild(structureEl);
+          });
+
+          // Render resources
+          resources.forEach((resource) => {
+            const resourceEl = document.createElement("div");
+            resourceEl.className = `resource ${resource.type}`;
+            resourceEl.style.left = `${resource.x}px`;
+            resourceEl.style.top = `${resource.y}px`;
+            ecosystem.appendChild(resourceEl);
           });
 
           // Render food
@@ -1573,11 +4567,97 @@
             lifeEl.style.backgroundColor = life.template.color;
             lifeEl.style.borderRadius = "50%";
 
+            // Add red tint if in combat
+            if (life.inCombat) {
+              lifeEl.style.boxShadow = "0 0 10px #ff0000";
+            }
+
+            // Add rebellion tint if rebel
+            if (life.isRebel) {
+              lifeEl.style.boxShadow = "0 0 10px #e83e8c";
+            }
+
+            // Health indicator
+            const healthEl = document.createElement("div");
+            healthEl.className = "health-indicator";
+            const healthBar = document.createElement("div");
+            healthBar.className = "health-bar";
+            healthBar.style.width = `${(life.health / life.maxHealth) * 100}%`;
+            healthEl.appendChild(healthBar);
+            lifeEl.appendChild(healthEl);
+
+            // Loyalty indicator (for non-rebels)
+            if (!life.isRebel && life.template.faction !== "neutral") {
+              const loyaltyEl = document.createElement("div");
+              loyaltyEl.className = "loyalty-indicator";
+              const loyaltyBar = document.createElement("div");
+              loyaltyBar.className = "loyalty-bar";
+              loyaltyBar.style.width = `${life.loyalty}%`;
+              loyaltyEl.appendChild(loyaltyBar);
+              lifeEl.appendChild(loyaltyEl);
+            }
+
             // Age indicator
             const ageEl = document.createElement("div");
             ageEl.className = "age-indicator";
             ageEl.textContent = `Age: ${Math.floor(life.age)}`;
             lifeEl.appendChild(ageEl);
+
+            // Faction indicator
+            const factionEl = document.createElement("div");
+            factionEl.className = "faction-indicator";
+            factionEl.style.backgroundColor =
+              factionColors[life.template.faction];
+            lifeEl.appendChild(factionEl);
+
+            // Rebel indicator
+            if (life.isRebel) {
+              const rebelEl = document.createElement("div");
+              rebelEl.className = "rebel-indicator";
+              lifeEl.appendChild(rebelEl);
+            }
+
+            // Inventory indicator
+            if (
+              craftingEnabled &&
+              (life.inventory.wood > 0 ||
+                life.inventory.stone > 0 ||
+                life.inventory.crystal > 0 ||
+                life.inventory.metal > 0 ||
+                life.inventory.magic > 0)
+            ) {
+              const invEl = document.createElement("div");
+              invEl.className = "inventory-indicator";
+              invEl.textContent = `W:${life.inventory.wood} S:${life.inventory.stone} C:${life.inventory.crystal} M:${life.inventory.metal} MG:${life.inventory.magic}`;
+              lifeEl.appendChild(invEl);
+            }
+
+            // Tool indicator
+            if (life.hasTool || life.equippedTool) {
+              const toolEl = document.createElement("div");
+              toolEl.className = "structure tool";
+              toolEl.style.left = `${life.x + life.size}px`;
+              toolEl.style.top = `${life.y}px`;
+              ecosystem.appendChild(toolEl);
+            }
+
+            // Weapon indicator
+            if (life.hasWeapon) {
+              const weaponEl = document.createElement("div");
+              weaponEl.className = "structure weapon";
+              weaponEl.style.left = `${life.x}px`;
+              weaponEl.style.top = `${life.y + life.size}px`;
+              ecosystem.appendChild(weaponEl);
+            }
+
+            // Magic indicator
+            if (life.hasMagic) {
+              const magicEl = document.createElement("div");
+              magicEl.className = "structure magic";
+              magicEl.style.left = `${life.x + life.size}px`;
+              magicEl.style.top = `${life.y + life.size}px`;
+              ecosystem.appendChild(magicEl);
+            }
 
             // Generation indicator for evolved forms
             if (life.generation > 1) {
@@ -1633,6 +4713,31 @@
                         `;
             }
 
+            if (life.template.hasWings) {
+              features.innerHTML += `
+                            <div class="limb horizontal top" style="background-color: ${
+                              life.template.color
+                            }; width: ${life.size * 0.8}px; height: ${
+                life.size * 0.2
+              }px; border-radius: 50%; top: -${life.size * 0.25}px;"></div>
+                        `;
+            }
+
+            if (life.template.hasAntennae) {
+              features.innerHTML += `
+                            <div class="limb vertical top" style="background-color: ${
+                              life.template.color
+                            }; width: ${life.size * 0.05}px; height: ${
+                life.size * 0.25
+              }px; top: -${life.size * 0.25}px; left: 40%;"></div>
+                            <div class="limb vertical top" style="background-color: ${
+                              life.template.color
+                            }; width: ${life.size * 0.05}px; height: ${
+                life.size * 0.25
+              }px; top: -${life.size * 0.25}px; right: 40%;"></div>
+                        `;
+            }
+
             lifeEl.appendChild(features);
             ecosystem.appendChild(lifeEl);
 
@@ -1646,6 +4751,47 @@
                 particle.style.animationDelay = `${Math.random() * 2}s`;
                 ecosystem.appendChild(particle);
               }
+            }
+
+            // Show crafting particles when crafting
+            if (life.craftingCooldown > 0) {
+              for (let i = 0; i < 2; i++) {
+                const particle = document.createElement("div");
+                particle.className = "crafting-particle";
+                particle.style.left = `${life.x + Math.random() * life.size}px`;
+                particle.style.top = `${life.y + Math.random() * life.size}px`;
+                particle.style.animationDelay = `${Math.random()}s`;
+                ecosystem.appendChild(particle);
+              }
+            }
+
+            // Show magic particles for magical life forms
+            if (life.hasMagic) {
+              for (let i = 0; i < 2; i++) {
+                const particle = document.createElement("div");
+                particle.className = "magic-particle";
+                particle.style.left = `${life.x + Math.random() * life.size}px`;
+                particle.style.top = `${life.y + Math.random() * life.size}px`;
+                particle.style.animationDelay = `${Math.random() * 1.5}s`;
+                ecosystem.appendChild(particle);
+              }
+            }
+
+            // Show rebellion particles for rebels
+            if (life.isRebel && Math.random() < 0.1) {
+              createRebellionParticles(life.x, life.y);
+            }
+
+            // Show leader indicators
+            if (life.isLeader) {
+              const leaderIndicator = document.createElement("div");
+              leaderIndicator.className = "leader-indicator";
+              lifeEl.appendChild(leaderIndicator);
+
+              const leaderCrown = document.createElement("div");
+              leaderCrown.className = "leader-crown";
+              leaderCrown.textContent = "👑";
+              lifeEl.appendChild(leaderCrown);
             }
           });
         }
@@ -1669,11 +4815,393 @@
             notification.classList.add("warning");
           } else if (type === "structure") {
             notification.classList.add("structure");
+          } else if (type === "crafting") {
+            notification.classList.add("crafting");
+          } else if (type === "tool") {
+            notification.classList.add("tool");
+          } else if (type === "weapon") {
+            notification.classList.add("weapon");
+          } else if (type === "magic") {
+            notification.classList.add("magic");
+          } else if (type === "war") {
+            notification.classList.add("war");
+          } else if (type === "rebellion") {
+            notification.classList.add("rebellion");
+          } else if (type === "leader") {
+            notification.classList.add("leader");
           }
           notification.classList.add("show");
           setTimeout(() => {
             notification.classList.remove("show");
           }, 3000);
+        }
+
+        // Leader functions
+        function electLeader() {
+          const faction = selectedFactionLeader.value;
+
+          // Check if faction already has a leader
+          if (leaders.some((leader) => leader.faction === faction)) {
+            showNotification(`${faction} already has a leader!`, "warning");
+            return;
+          }
+
+          // Find suitable candidates from the faction
+          const factionMembers = simulatedLifeForms.filter(
+            (life) => life.template.faction === faction && !life.isRebel
+          );
+
+          if (factionMembers.length === 0) {
+            showNotification(
+              `No suitable candidates in ${faction} faction!`,
+              "warning"
+            );
+            return;
+          }
+
+          // Select the strongest member as leader
+          const candidate = factionMembers.reduce((prev, current) =>
+            prev.attack + prev.defense > current.attack + current.defense
+              ? prev
+              : current
+          );
+
+          // Create leader
+          const leader = {
+            id: Date.now(),
+            lifeFormId: candidate.id,
+            name: candidate.template.name,
+            faction: faction,
+            level: 1,
+            experience: 0,
+            abilities: [
+              Object.keys(leaderAbilities)[
+                Math.floor(Math.random() * Object.keys(leaderAbilities).length)
+              ],
+            ],
+            abilityCooldown: 0,
+            influence: 10,
+            popularity: 50,
+          };
+
+          leaders.push(leader);
+
+          // Mark the life form as leader
+          candidate.isLeader = true;
+          candidate.leaderId = leader.id;
+
+          showNotification(
+            `${leader.name} has been elected as leader of the ${faction} faction!`,
+            "leader"
+          );
+          updateLeadersList();
+          renderSimulation();
+        }
+
+        function removeLeader() {
+          const faction = selectedFactionLeader.value;
+          const leaderIndex = leaders.findIndex(
+            (leader) => leader.faction === faction
+          );
+
+          if (leaderIndex === -1) {
+            showNotification(
+              `${faction} faction doesn't have a leader!`,
+              "warning"
+            );
+            return;
+          }
+
+          const leader = leaders[leaderIndex];
+
+          // Find and unmark the life form
+          const leaderLifeForm = simulatedLifeForms.find(
+            (life) => life.leaderId === leader.id
+          );
+          if (leaderLifeForm) {
+            leaderLifeForm.isLeader = false;
+            leaderLifeForm.leaderId = null;
+          }
+
+          leaders.splice(leaderIndex, 1);
+          showNotification(
+            `${leader.name} has been removed as leader of the ${faction} faction!`,
+            "warning"
+          );
+          updateLeadersList();
+          renderSimulation();
+        }
+
+        function useLeaderAbility() {
+          const faction = selectedFactionLeader.value;
+          const leader = leaders.find((leader) => leader.faction === faction);
+
+          if (!leader) {
+            showNotification(
+              `${faction} faction doesn't have a leader!`,
+              "warning"
+            );
+            return;
+          }
+
+          if (leader.abilityCooldown > 0) {
+            showNotification(
+              `Leader ability is on cooldown! ${leader.abilityCooldown}s remaining.`,
+              "warning"
+            );
+            return;
+          }
+
+          // Use a random ability the leader has
+          const abilityName =
+            leader.abilities[
+              Math.floor(Math.random() * leader.abilities.length)
+            ];
+          const ability = leaderAbilities[abilityName];
+
+          // Apply ability effect
+          applyLeaderAbility(leader, ability);
+
+          leader.abilityCooldown = ability.cooldown;
+          showNotification(
+            `${leader.name} used ${ability.name}: ${ability.description}`,
+            "leader"
+          );
+          updateLeadersList();
+        }
+
+        function applyLeaderAbility(leader, ability) {
+          switch (ability.effect) {
+            case "loyalty":
+              // Increase loyalty for faction members
+              simulatedLifeForms.forEach((life) => {
+                if (life.template.faction === leader.faction && !life.isRebel) {
+                  life.loyalty = Math.min(100, life.loyalty + ability.value);
+                }
+              });
+              break;
+            case "resources":
+              // Increase resource collection for faction members
+              simulatedLifeForms.forEach((life) => {
+                if (life.template.faction === leader.faction && !life.isRebel) {
+                  life.resourceBonus = ability.value;
+                  // Reset after 10 seconds
+                  setTimeout(() => {
+                    life.resourceBonus = 1;
+                  }, 10000);
+                }
+              });
+              break;
+            case "combat":
+              // Increase combat stats for faction members
+              simulatedLifeForms.forEach((life) => {
+                if (life.template.faction === leader.faction && !life.isRebel) {
+                  life.attack += ability.value;
+                  life.defense += ability.value;
+                  // Reset after 15 seconds
+                  setTimeout(() => {
+                    life.attack -= ability.value;
+                    life.defense -= ability.value;
+                  }, 15000);
+                }
+              });
+              break;
+            case "aggression":
+              // Decrease aggression between factions
+              simulatedLifeForms.forEach((life) => {
+                if (life.template.faction !== "neutral") {
+                  life.aggression = Math.max(
+                    0.1,
+                    life.aggression + ability.value
+                  );
+                }
+              });
+              break;
+            case "rebellion":
+              // Decrease rebellion risk
+              propagandaPower = Math.max(0, propagandaPower + ability.value);
+              break;
+            case "propaganda":
+              // Increase loyalty and decrease rebel recruitment
+              simulatedLifeForms.forEach((life) => {
+                if (!life.isRebel && life.template.faction !== "neutral") {
+                  life.loyalty = Math.min(100, life.loyalty + ability.value);
+                }
+              });
+              suppressionPower += 10;
+              break;
+          }
+        }
+
+        function trainLeader() {
+          const faction = selectedFactionLeader.value;
+          const leader = leaders.find((leader) => leader.faction === faction);
+
+          if (!leader) {
+            showNotification(
+              `${faction} faction doesn't have a leader!`,
+              "warning"
+            );
+            return;
+          }
+
+          // Check if leader can learn new abilities
+          if (leader.abilities.length >= 3) {
+            showNotification(
+              `${leader.name} has already learned the maximum number of abilities!`,
+              "warning"
+            );
+            return;
+          }
+
+          // Gain experience
+          leader.experience += 10;
+
+          // Level up if enough experience
+          if (leader.experience >= leader.level * 20) {
+            leader.level++;
+            leader.experience = 0;
+            leader.influence += 5;
+
+            // Learn a new ability
+            const availableAbilities = Object.keys(leaderAbilities).filter(
+              (ability) => !leader.abilities.includes(ability)
+            );
+
+            if (availableAbilities.length > 0) {
+              const newAbility =
+                availableAbilities[
+                  Math.floor(Math.random() * availableAbilities.length)
+                ];
+              leader.abilities.push(newAbility);
+              showNotification(
+                `${leader.name} leveled up to level ${leader.level} and learned ${leaderAbilities[newAbility].name}!`,
+                "leader"
+              );
+            } else {
+              showNotification(
+                `${leader.name} leveled up to level ${leader.level}!`,
+                "leader"
+              );
+            }
+          } else {
+            showNotification(
+              `${leader.name} gained experience! (${leader.experience}/${
+                leader.level * 20
+              })`,
+              "leader"
+            );
+          }
+
+          updateLeadersList();
+        }
+
+        function updateLeadersList() {
+          leadersList.innerHTML = "";
+
+          if (leaders.length === 0) {
+            leadersList.innerHTML =
+              '<p style="text-align: center; opacity: 0.7;">No leaders elected yet.</p>';
+            return;
+          }
+
+          leaders.forEach((leader) => {
+            const leaderCard = document.createElement("div");
+            leaderCard.className = "leader-card";
+
+            const abilitiesHTML = leader.abilities
+              .map(
+                (ability) =>
+                  `<div class="ability">${leaderAbilities[ability].name}</div>`
+              )
+              .join("");
+
+            leaderCard.innerHTML = `
+                        <h4>${leader.name}</h4>
+                        <p>Faction: ${leader.faction}</p>
+                        <div class="leader-stats">
+                            <div class="leader-stat">Level: ${
+                              leader.level
+                            }</div>
+                            <div class="leader-stat">XP: ${leader.experience}/${
+              leader.level * 20
+            }</div>
+                            <div class="leader-stat">Influence: ${
+                              leader.influence
+                            }</div>
+                            <div class="leader-stat">Popularity: ${
+                              leader.popularity
+                            }%</div>
+                            <div class="leader-stat">Abilities: ${
+                              leader.abilities.length
+                            }</div>
+                            <div class="leader-stat">Cooldown: ${
+                              leader.abilityCooldown
+                            }s</div>
+                        </div>
+                        <div class="leader-abilities">
+                            ${abilitiesHTML}
+                        </div>
+                    `;
+
+            leadersList.appendChild(leaderCard);
+          });
+        }
+
+        function updateLeadersInSimulation() {
+          leaders.forEach((leader) => {
+            if (leader.abilityCooldown > 0) {
+              leader.abilityCooldown--;
+            }
+
+            // Update leader popularity based on faction performance
+            const factionMembers = simulatedLifeForms.filter(
+              (life) =>
+                life.template.faction === leader.faction && !life.isRebel
+            );
+
+            if (factionMembers.length > 0) {
+              const avgLoyalty =
+                factionMembers.reduce((sum, life) => sum + life.loyalty, 0) /
+                factionMembers.length;
+              leader.popularity = Math.min(
+                100,
+                Math.max(0, avgLoyalty - 20 + Math.random() * 10)
+              );
+            }
+
+            // Leader can die if popularity is too low
+            if (leader.popularity < 10 && Math.random() < 0.01) {
+              removeLeaderByFaction(leader.faction);
+              showNotification(
+                `${leader.name} was overthrown as leader of the ${leader.faction} faction due to low popularity!`,
+                "warning"
+              );
+            }
+          });
+        }
+
+        function removeLeaderByFaction(faction) {
+          const leaderIndex = leaders.findIndex(
+            (leader) => leader.faction === faction
+          );
+
+          if (leaderIndex !== -1) {
+            const leader = leaders[leaderIndex];
+
+            // Find and unmark the life form
+            const leaderLifeForm = simulatedLifeForms.find(
+              (life) => life.leaderId === leader.id
+            );
+            if (leaderLifeForm) {
+              leaderLifeForm.isLeader = false;
+              leaderLifeForm.leaderId = null;
+            }
+
+            leaders.splice(leaderIndex, 1);
+            updateLeadersList();
+            renderSimulation();
+          }
         }
 
         // Initialize with empty gallery
